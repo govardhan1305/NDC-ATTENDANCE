@@ -6,1320 +6,739 @@
 <title>NDC Attendance System</title>
 
 <style>
-/* =========================================================
-   NDC ATTENDANCE SYSTEM
-   SINGLE-FILE FRONTEND
-   ========================================================= */
-
-:root {
-    --blue: #0b3d91;
-    --blue-dark: #06265f;
-    --blue-light: #eaf2ff;
-    --blue-mid: #1760c5;
-
-    --white: #ffffff;
-    --bg: #f3f6fb;
-
-    --text: #162033;
-    --muted: #718096;
-
-    --green: #13865c;
-    --red: #d74444;
-    --orange: #d28b18;
-
-    --shadow:
-        0 20px 55px rgba(13, 45, 91, .12),
-        0 5px 15px rgba(13, 45, 91, .06);
-
-    --shadow-hover:
-        0 28px 70px rgba(13, 45, 91, .18),
-        0 8px 22px rgba(13, 45, 91, .08);
-
-    --radius: 22px;
+:root{
+    --blue:#0b3d91;
+    --blue-dark:#06265f;
+    --blue-light:#eaf2ff;
+    --bg:#f3f6fb;
+    --white:#ffffff;
+    --text:#162033;
+    --muted:#718096;
+    --green:#13865c;
+    --red:#d74444;
+    --orange:#d28b18;
+    --border:#e2e8f0;
+    --shadow:0 12px 35px rgba(15,35,70,.10);
 }
 
-/* ---------------- RESET ---------------- */
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    min-height: 100vh;
-    font-family:
-        Inter,
-        "Segoe UI",
-        Roboto,
-        Arial,
-        sans-serif;
-
-    color: var(--text);
-
-    background:
-        radial-gradient(
-            circle at 10% 0%,
-            rgba(23,96,197,.10),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 90% 10%,
-            rgba(11,61,145,.08),
-            transparent 30%
-        ),
-        var(--bg);
+body{
+    font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
 }
 
 button,
 input,
-select,
-textarea {
-    font: inherit;
+select{
+    font:inherit;
 }
 
-button {
-    cursor: pointer;
+button{
+    cursor:pointer;
 }
 
-/* ---------------- APP ---------------- */
-
-#app {
-    min-height: 100vh;
+button:disabled{
+    cursor:not-allowed;
+    opacity:.55;
 }
 
-/* ---------------- LOGIN ---------------- */
+/* =========================
+   LOGIN
+========================= */
 
-.login-screen {
-    min-height: 100vh;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 25px;
-
-    position: relative;
-    overflow: hidden;
-}
-
-.login-screen::before {
-    content: "";
-
-    position: absolute;
-
-    width: 500px;
-    height: 500px;
-
-    border-radius: 50%;
-
+.login-page{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:25px;
     background:
-        radial-gradient(
-            circle,
-            rgba(11,61,145,.14),
-            transparent 70%
+        radial-gradient(circle at 10% 10%,rgba(11,61,145,.15),transparent 30%),
+        radial-gradient(circle at 90% 90%,rgba(11,61,145,.12),transparent 30%),
+        linear-gradient(135deg,#eef4ff,#f8fafc);
+}
+
+.login-card{
+    width:100%;
+    max-width:460px;
+    background:rgba(255,255,255,.96);
+    border:1px solid rgba(255,255,255,.8);
+    border-radius:28px;
+    padding:34px;
+    box-shadow:
+        0 25px 70px rgba(6,38,95,.15),
+        inset 0 1px 0 rgba(255,255,255,.8);
+}
+
+.brand{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.brand-logo{
+    width:76px;
+    height:76px;
+    margin:auto;
+    border-radius:22px;
+    background:linear-gradient(145deg,var(--blue),var(--blue-dark));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:27px;
+    font-weight:900;
+    letter-spacing:-1px;
+    box-shadow:
+        0 15px 30px rgba(11,61,145,.28),
+        inset 0 2px 3px rgba(255,255,255,.25);
+}
+
+.brand h1{
+    margin-top:18px;
+    font-size:27px;
+}
+
+.brand p{
+    color:var(--muted);
+    margin-top:7px;
+    font-size:14px;
+}
+
+.role-switch{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    background:#f1f5f9;
+    padding:6px;
+    border-radius:15px;
+    margin-bottom:22px;
+}
+
+.role-switch button{
+    border:0;
+    background:transparent;
+    padding:11px 5px;
+    border-radius:11px;
+    color:var(--muted);
+    font-weight:700;
+}
+
+.role-switch button.active{
+    background:white;
+    color:var(--blue);
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.form-group{
+    margin-bottom:17px;
+}
+
+.form-group label{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:7px;
+}
+
+.form-group input,
+.form-group select{
+    width:100%;
+    padding:14px 15px;
+    border:1px solid var(--border);
+    border-radius:13px;
+    outline:none;
+    background:#fff;
+    transition:.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus{
+    border-color:var(--blue);
+    box-shadow:0 0 0 4px rgba(11,61,145,.09);
+}
+
+.primary-btn{
+    width:100%;
+    border:0;
+    padding:14px;
+    border-radius:13px;
+    color:white;
+    background:linear-gradient(145deg,var(--blue),var(--blue-dark));
+    font-weight:800;
+    box-shadow:0 9px 20px rgba(11,61,145,.23);
+    transition:.2s;
+}
+
+.primary-btn:hover{
+    transform:translateY(-1px);
+}
+
+.secondary-btn{
+    border:1px solid var(--border);
+    background:white;
+    color:var(--blue);
+    padding:12px 16px;
+    border-radius:12px;
+    font-weight:700;
+}
+
+.demo-note{
+    text-align:center;
+    margin-top:17px;
+    color:var(--muted);
+    font-size:12px;
+}
+
+/* =========================
+   APP
+========================= */
+
+.app-shell{
+    min-height:100vh;
+}
+
+.topbar{
+    height:72px;
+    background:white;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+
+.top-brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.top-logo{
+    width:43px;
+    height:43px;
+    border-radius:13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(145deg,var(--blue),var(--blue-dark));
+    color:white;
+    font-weight:900;
+    font-size:15px;
+    box-shadow:0 7px 15px rgba(11,61,145,.2);
+}
+
+.top-brand strong{
+    display:block;
+}
+
+.top-brand small{
+    color:var(--muted);
+}
+
+.profile-area{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--blue-light);
+    color:var(--blue);
+    font-weight:800;
+}
+
+.logout-btn{
+    border:0;
+    background:transparent;
+    color:var(--red);
+    font-weight:700;
+}
+
+.page{
+    max-width:1200px;
+    margin:auto;
+    padding:28px 22px 50px;
+}
+
+.page-title{
+    margin-bottom:24px;
+}
+
+.page-title h2{
+    font-size:29px;
+}
+
+.page-title p{
+    color:var(--muted);
+    margin-top:5px;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.grid{
+    display:grid;
+    gap:18px;
+}
+
+.stats-grid{
+    grid-template-columns:repeat(4,1fr);
+}
+
+.dashboard-grid{
+    grid-template-columns:2fr 1fr;
+}
+
+.card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:20px;
+    box-shadow:var(--shadow);
+}
+
+.stat-card{
+    position:relative;
+    overflow:hidden;
+}
+
+.stat-card:after{
+    content:"";
+    position:absolute;
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    background:var(--blue-light);
+    right:-35px;
+    top:-35px;
+}
+
+.stat-label{
+    color:var(--muted);
+    font-size:13px;
+    font-weight:700;
+}
+
+.stat-value{
+    font-size:29px;
+    font-weight:900;
+    margin-top:9px;
+}
+
+.stat-extra{
+    margin-top:6px;
+    font-size:12px;
+    color:var(--green);
+    font-weight:700;
+}
+
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.section-title h3{
+    font-size:17px;
+}
+
+/* =========================
+   LOCATION
+========================= */
+
+.zone-card{
+    position:relative;
+    overflow:hidden;
+}
+
+.zone-status{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.zone-dot{
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:var(--orange);
+    box-shadow:0 0 0 7px rgba(210,139,24,.12);
+}
+
+.zone-dot.inside{
+    background:var(--green);
+    box-shadow:0 0 0 7px rgba(19,134,92,.12);
+}
+
+.zone-dot.outside{
+    background:var(--red);
+    box-shadow:0 0 0 7px rgba(215,68,68,.12);
+}
+
+.zone-main{
+    font-weight:800;
+}
+
+.zone-sub{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:4px;
+}
+
+.location-details{
+    margin-top:18px;
+    padding-top:15px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.8;
+}
+
+/* =========================
+   CLASSES
+========================= */
+
+.class-list{
+    display:flex;
+    flex-direction:column;
+    gap:11px;
+}
+
+.class-item{
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+.class-info strong{
+    display:block;
+}
+
+.class-info span{
+    color:var(--muted);
+    font-size:12px;
+}
+
+.status-pill{
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:800;
+}
+
+.present{
+    color:var(--green);
+    background:#e8f7f0;
+}
+
+.absent{
+    color:var(--red);
+    background:#fdecec;
+}
+
+.pending{
+    color:#9a6900;
+    background:#fff4d7;
+}
+
+/* =========================
+   SCANNER
+========================= */
+
+.scanner-box{
+    text-align:center;
+    padding:30px 20px;
+}
+
+.scanner-frame{
+    width:230px;
+    height:230px;
+    margin:20px auto;
+    border:5px solid var(--blue);
+    border-radius:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            #fff,
+            #fff 7px,
+            #edf3ff 8px
         );
-
-    top: -180px;
-    left: -180px;
-}
-
-.login-screen::after {
-    content: "";
-
-    position: absolute;
-
-    width: 500px;
-    height: 500px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(23,96,197,.10),
-            transparent 70%
-        );
-
-    right: -200px;
-    bottom: -200px;
-}
-
-.login-card {
-    position: relative;
-    z-index: 2;
-
-    width: 430px;
-    max-width: 100%;
-
-    padding: 40px;
-
-    border-radius: 30px;
-
-    background:
-        rgba(255,255,255,.91);
-
-    backdrop-filter: blur(20px);
-
-    border:
-        1px solid rgba(255,255,255,.9);
-
     box-shadow:
-        0 35px 90px rgba(13,45,91,.18),
-        0 10px 25px rgba(13,45,91,.07);
+        0 20px 45px rgba(11,61,145,.16),
+        inset 0 0 25px rgba(11,61,145,.06);
 }
 
-.logo-box {
-    width: 85px;
-    height: 85px;
+.scan-line{
+    position:absolute;
+    left:10px;
+    right:10px;
+    height:3px;
+    background:var(--blue);
+    box-shadow:0 0 12px rgba(11,61,145,.6);
+    animation:scan 1.7s infinite;
+}
 
-    margin: 0 auto 18px;
+@keyframes scan{
+    0%{top:15px}
+    50%{top:205px}
+    100%{top:15px}
+}
 
-    border-radius: 24px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: white;
-
-    font-size: 27px;
-    font-weight: 900;
-
+.fake-qr{
+    width:150px;
+    height:150px;
     background:
-        linear-gradient(
-            145deg,
-            #1760c5,
-            #06265f
-        );
-
-    box-shadow:
-        0 18px 35px rgba(11,61,145,.28),
-        inset 0 2px 2px rgba(255,255,255,.3);
-
-    transform:
-        perspective(600px)
-        rotateX(3deg);
+        linear-gradient(90deg,#111 10px,transparent 10px) 0 0/30px 30px,
+        linear-gradient(#111 10px,transparent 10px) 0 0/30px 30px,
+        #fff;
+    opacity:.75;
 }
 
-.login-title {
-    text-align: center;
+/* =========================
+   TEACHER QR
+========================= */
+
+.qr-session{
+    max-width:520px;
+    margin:30px auto;
+    text-align:center;
 }
 
-.login-title h1 {
-    font-size: 28px;
-    letter-spacing: -1px;
+.qr-display{
+    width:290px;
+    height:290px;
+    margin:25px auto;
+    background:white;
+    border:12px solid white;
+    border-radius:16px;
+    box-shadow:0 20px 45px rgba(0,0,0,.13);
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
-.login-title p {
-    margin-top: 7px;
-    color: var(--muted);
-    font-size: 14px;
-}
-
-/* ---------------- ROLE SWITCH ---------------- */
-
-.role-switch {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-
-    gap: 6px;
-
-    padding: 5px;
-
-    margin: 28px 0 22px;
-
-    background: #edf2f9;
-
-    border-radius: 14px;
-}
-
-.role-btn {
-    border: 0;
-
-    padding: 11px 5px;
-
-    border-radius: 10px;
-
-    background: transparent;
-
-    color: var(--muted);
-
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.role-btn.active {
-    color: var(--blue);
-
-    background: white;
-
-    box-shadow:
-        0 4px 12px rgba(13,45,91,.09);
-}
-
-/* ---------------- FORM ---------------- */
-
-.form-group {
-    margin-bottom: 17px;
-}
-
-.form-group label {
-    display: block;
-
-    margin-bottom: 7px;
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-    color: #475569;
-}
-
-.form-input {
-    width: 100%;
-
-    height: 50px;
-
-    padding: 0 15px;
-
-    border-radius: 13px;
-
-    border: 1px solid #dbe3ef;
-
-    outline: none;
-
-    background: rgba(255,255,255,.9);
-
-    transition: .2s;
-}
-
-.form-input:focus {
-    border-color: var(--blue);
-
-    box-shadow:
-        0 0 0 4px rgba(11,61,145,.09);
-}
-
-.primary-btn {
-    width: 100%;
-
-    min-height: 50px;
-
-    border: 0;
-
-    border-radius: 14px;
-
-    color: white;
-
-    font-weight: 800;
-
+.qr-pattern{
+    width:100%;
+    height:100%;
     background:
-        linear-gradient(
-            145deg,
-            #1760c5,
-            #0b3d91
-        );
-
-    box-shadow:
-        0 10px 25px rgba(11,61,145,.23),
-        inset 0 1px 0 rgba(255,255,255,.28);
-
-    transition: .2s;
+        linear-gradient(90deg,#111 12px,transparent 12px) 0 0/36px 36px,
+        linear-gradient(#111 12px,transparent 12px) 0 0/36px 36px,
+        linear-gradient(45deg,transparent 35%,#111 35%,#111 65%,transparent 65%);
 }
 
-.primary-btn:hover {
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 16px 30px rgba(11,61,145,.28);
+.timer{
+    font-size:30px;
+    font-weight:900;
+    color:var(--blue);
 }
 
-.secondary-btn {
-    min-height: 46px;
-
-    padding: 0 18px;
-
-    border-radius: 12px;
-
-    border: 1px solid #dbe3ef;
-
-    color: var(--blue);
-
-    background: white;
-
-    font-weight: 750;
+.session-note{
+    color:var(--muted);
+    font-size:13px;
+    margin-top:8px;
 }
 
-.danger-btn {
-    min-height: 46px;
+/* =========================
+   ADMIN
+========================= */
 
-    padding: 0 18px;
-
-    border-radius: 12px;
-
-    border: 0;
-
-    color: white;
-
-    background: var(--red);
-
-    font-weight: 750;
+.admin-actions{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
 }
 
-/* ---------------- APP LAYOUT ---------------- */
-
-.app-layout {
-    min-height: 100vh;
+.action-card{
+    padding:20px;
+    border:1px solid var(--border);
+    border-radius:17px;
+    background:white;
+    cursor:pointer;
+    transition:.2s;
 }
 
-.topbar {
-    height: 74px;
-
-    position: sticky;
-    top: 0;
-    z-index: 100;
-
-    display: flex;
-    align-items: center;
-
-    background:
-        rgba(255,255,255,.88);
-
-    backdrop-filter: blur(18px);
-
-    border-bottom:
-        1px solid rgba(11,61,145,.08);
-
-    box-shadow:
-        0 5px 20px rgba(13,45,91,.05);
+.action-card:hover{
+    transform:translateY(-3px);
+    box-shadow:var(--shadow);
 }
 
-.topbar-inner {
-    width: min(1180px, calc(100% - 28px));
-
-    margin: auto;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.action-icon{
+    width:45px;
+    height:45px;
+    border-radius:13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--blue-light);
+    color:var(--blue);
+    font-weight:900;
+    margin-bottom:14px;
 }
 
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.action-card strong{
+    display:block;
 }
 
-.brand-icon {
-    width: 43px;
-    height: 43px;
-
-    border-radius: 12px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: white;
-
-    font-weight: 900;
-
-    background:
-        linear-gradient(
-            145deg,
-            #1760c5,
-            #06265f
-        );
-
-    box-shadow:
-        0 8px 18px rgba(11,61,145,.2);
+.action-card span{
+    color:var(--muted);
+    font-size:12px;
 }
 
-.brand-text strong {
-    display: block;
+/* =========================
+   MODAL
+========================= */
 
-    color: var(--blue);
-
-    font-size: 16px;
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(5,20,45,.52);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    z-index:100;
 }
 
-.brand-text span {
-    display: block;
-
-    color: var(--muted);
-
-    font-size: 11px;
-    margin-top: 2px;
+.modal{
+    width:100%;
+    max-width:480px;
+    background:white;
+    border-radius:22px;
+    padding:25px;
+    box-shadow:0 25px 70px rgba(0,0,0,.25);
 }
 
-.user-menu {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
 }
 
-.avatar {
-    width: 42px;
-    height: 42px;
-
-    border-radius: 13px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: white;
-
-    font-weight: 800;
-
-    background:
-        linear-gradient(
-            145deg,
-            #1760c5,
-            #0b3d91
-        );
-
-    box-shadow:
-        0 8px 20px rgba(11,61,145,.18);
+.close-btn{
+    border:0;
+    background:#f1f5f9;
+    width:34px;
+    height:34px;
+    border-radius:10px;
 }
 
-/* ---------------- MAIN ---------------- */
+/* =========================
+   TOAST
+========================= */
 
-.main {
-    width: min(1180px, calc(100% - 28px));
-
-    margin: auto;
-
-    padding: 30px 0 70px;
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    max-width:350px;
+    background:#14213d;
+    color:white;
+    padding:14px 17px;
+    border-radius:13px;
+    box-shadow:0 15px 40px rgba(0,0,0,.2);
+    transform:translateY(120px);
+    opacity:0;
+    transition:.3s;
+    z-index:200;
+    font-size:13px;
 }
 
-.page-heading {
-    margin-bottom: 24px;
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
 }
 
-.page-heading h1 {
-    font-size: clamp(26px, 4vw, 38px);
-
-    letter-spacing: -1.5px;
+.toast.success{
+    background:var(--green);
 }
 
-.page-heading p {
-    margin-top: 6px;
-
-    color: var(--muted);
+.toast.error{
+    background:var(--red);
 }
 
-/* ---------------- GRID ---------------- */
-
-.stats-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap: 17px;
-
-    margin-bottom: 20px;
-}
-
-.content-grid {
-    display: grid;
-
-    grid-template-columns:
-        1.3fr .7fr;
-
-    gap: 20px;
-}
-
-/* ---------------- CARD ---------------- */
-
-.card {
-    position: relative;
-
-    padding: 24px;
-
-    border-radius: var(--radius);
-
-    background:
-        rgba(255,255,255,.87);
-
-    backdrop-filter: blur(14px);
-
-    border:
-        1px solid rgba(255,255,255,.9);
-
-    box-shadow: var(--shadow);
-
-    transition:
-        transform .25s ease,
-        box-shadow .25s ease;
-}
-
-.card:hover {
-    transform: translateY(-4px);
-
-    box-shadow: var(--shadow-hover);
-}
-
-/* ---------------- STAT ---------------- */
-
-.stat-card {
-    overflow: hidden;
-}
-
-.stat-card::before {
-    content: "";
-
-    position: absolute;
-
-    width: 130px;
-    height: 130px;
-
-    border-radius: 50%;
-
-    right: -60px;
-    top: -60px;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(11,61,145,.13),
-            transparent 70%
-        );
-}
-
-.stat-icon {
-    width: 42px;
-    height: 42px;
-
-    border-radius: 13px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: var(--blue-light);
-
-    color: var(--blue);
-
-    font-size: 19px;
-
-    margin-bottom: 16px;
-}
-
-.stat-value {
-    font-size: 31px;
-
-    font-weight: 900;
-
-    letter-spacing: -1.5px;
-
-    color: var(--blue);
-}
-
-.stat-label {
-    margin-top: 5px;
-
-    color: var(--muted);
-
-    font-size: 13px;
-
-    font-weight: 650;
-}
-
-/* ---------------- ZONE ---------------- */
-
-.zone-card {
-    min-height: 285px;
-
-    overflow: hidden;
-
-    background:
-        linear-gradient(
-            145deg,
-            #ffffff,
-            #f2f7ff
-        );
-}
-
-.zone-card::after {
-    content: "";
-
-    position: absolute;
-
-    width: 230px;
-    height: 230px;
-
-    right: -90px;
-    bottom: -100px;
-
-    border-radius: 50%;
-
-    border:
-        1px solid rgba(11,61,145,.08);
-}
-
-.zone-header {
-    display: flex;
-
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 10px;
-
-    margin-bottom: 25px;
-}
-
-.zone-title h2 {
-    font-size: 20px;
-}
-
-.zone-title p {
-    color: var(--muted);
-
-    margin-top: 5px;
-
-    font-size: 13px;
-}
-
-.zone-status {
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    padding: 8px 12px;
-
-    border-radius: 999px;
-
-    font-size: 12px;
-
-    font-weight: 800;
-}
-
-.zone-status.inside {
-    color: var(--green);
-
-    background:
-        rgba(19,134,92,.10);
-}
-
-.zone-status.outside {
-    color: var(--red);
-
-    background:
-        rgba(215,68,68,.10);
-}
-
-.zone-dot {
-    width: 8px;
-    height: 8px;
-
-    border-radius: 50%;
-
-    background: currentColor;
-
-    box-shadow:
-        0 0 0 5px rgba(19,134,92,.09);
-}
-
-.zone-visual {
-    height: 115px;
-
-    position: relative;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin: 10px 0 22px;
-
-    border-radius: 18px;
-
-    overflow: hidden;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(23,96,197,.11),
-            transparent 65%
-        ),
-        #edf4ff;
-}
-
-.zone-circle {
-    width: 105px;
-    height: 105px;
-
-    border-radius: 50%;
-
-    border:
-        2px solid rgba(11,61,145,.25);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    position: relative;
-}
-
-.zone-circle::before,
-.zone-circle::after {
-    content: "";
-
-    position: absolute;
-
-    border-radius: 50%;
-
-    border:
-        1px solid rgba(11,61,145,.12);
-}
-
-.zone-circle::before {
-    inset: -18px;
-}
-
-.zone-circle::after {
-    inset: -38px;
-}
-
-.zone-pin {
-    width: 37px;
-    height: 37px;
-
-    border-radius: 50%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: white;
-
-    background:
-        linear-gradient(
-            145deg,
-            #1760c5,
-            #0b3d91
-        );
-
-    box-shadow:
-        0 10px 22px rgba(11,61,145,.25);
-}
-
-/* ---------------- SCANNER ---------------- */
-
-.scanner-page {
-    display: none;
-}
-
-.scanner-box {
-    width: min(430px, 100%);
-
-    margin: 30px auto;
-
-    padding: 24px;
-
-    border-radius: 28px;
-
-    background:
-        #ffffff;
-
-    box-shadow:
-        0 30px 70px rgba(13,45,91,.15);
-}
-
-.camera {
-    width: 100%;
-
-    aspect-ratio: 1;
-
-    position: relative;
-
-    overflow: hidden;
-
-    border-radius: 22px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #06182f,
-            #12365f
-        );
-
-    box-shadow:
-        inset 0 0 50px rgba(0,0,0,.3);
-}
-
-.camera::before {
-    content: "";
-
-    position: absolute;
-
-    inset: 35px;
-
-    border:
-        2px solid rgba(255,255,255,.9);
-
-    border-radius: 18px;
-}
-
-.camera::after {
-    content: "";
-
-    position: absolute;
-
-    left: 10%;
-    right: 10%;
-
-    top: 50%;
-
-    height: 2px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            #66aaff,
-            transparent
-        );
-
-    box-shadow:
-        0 0 16px #66aaff;
-
-    animation:
-        scan 2s infinite ease-in-out;
-}
-
-@keyframes scan {
-    0% {
-        transform: translateY(-110px);
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+    .stats-grid{
+        grid-template-columns:repeat(2,1fr);
     }
 
-    50% {
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(110px);
+    .dashboard-grid{
+        grid-template-columns:1fr;
     }
 }
 
-.corner {
-    position: absolute;
+@media(max-width:650px){
+    .topbar{
+        padding:0 15px;
+    }
 
-    width: 30px;
-    height: 30px;
+    .top-brand small{
+        display:none;
+    }
 
-    border-color: white;
+    .page{
+        padding:22px 15px 40px;
+    }
 
-    border-style: solid;
+    .page-title h2{
+        font-size:24px;
+    }
 
-    z-index: 2;
-}
+    .stats-grid{
+        grid-template-columns:1fr 1fr;
+    }
 
-.corner.tl {
-    top: 28px;
-    left: 28px;
+    .admin-actions{
+        grid-template-columns:1fr;
+    }
 
-    border-width: 3px 0 0 3px;
-}
+    .login-card{
+        padding:25px 20px;
+    }
 
-.corner.tr {
-    top: 28px;
-    right: 28px;
-
-    border-width: 3px 3px 0 0;
-}
-
-.corner.bl {
-    bottom: 28px;
-    left: 28px;
-
-    border-width: 0 0 3px 3px;
-}
-
-.corner.br {
-    bottom: 28px;
-    right: 28px;
-
-    border-width: 0 3px 3px 0;
-}
-
-/* ---------------- QR ---------------- */
-
-.qr-session {
-    display: none;
-}
-
-.qr-card {
-    max-width: 650px;
-
-    margin: 20px auto;
-
-    text-align: center;
-}
-
-.fake-qr {
-    width: 280px;
-    height: 280px;
-
-    margin: 25px auto;
-
-    padding: 18px;
-
-    background: white;
-
-    border-radius: 20px;
-
-    box-shadow:
-        0 20px 45px rgba(13,45,91,.16);
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(15, 1fr);
-
-    gap: 2px;
-}
-
-.qr-cell {
-    background: #111;
-}
-
-.qr-cell.white {
-    background: white;
-}
-
-.live-badge {
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 7px;
-
-    padding: 7px 11px;
-
-    border-radius: 999px;
-
-    color: #b52f2f;
-
-    background:
-        rgba(215,68,68,.10);
-
-    font-size: 11px;
-
-    font-weight: 900;
-
-    text-transform: uppercase;
-}
-
-.live-dot {
-    width: 7px;
-    height: 7px;
-
-    border-radius: 50%;
-
-    background: #df3d3d;
-
-    animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-    50% {
-        transform: scale(.55);
-        opacity: .5;
+    .qr-display{
+        width:250px;
+        height:250px;
     }
 }
 
-/* ---------------- TABLE ---------------- */
-
-.table-wrap {
-    overflow-x: auto;
-
-    border-radius: 16px;
-}
-
-table {
-    width: 100%;
-
-    border-collapse: collapse;
-
-    min-width: 600px;
-}
-
-th {
-    text-align: left;
-
-    padding: 14px;
-
-    background: #f3f6fb;
-
-    color: var(--muted);
-
-    font-size: 11px;
-
-    text-transform: uppercase;
-
-    letter-spacing: .7px;
-}
-
-td {
-    padding: 15px 14px;
-
-    border-top:
-        1px solid #edf0f5;
-
-    font-size: 14px;
-}
-
-.status {
-    display: inline-flex;
-
-    padding: 6px 10px;
-
-    border-radius: 999px;
-
-    font-size: 11px;
-
-    font-weight: 800;
-}
-
-.status.present {
-    color: var(--green);
-
-    background:
-        rgba(19,134,92,.10);
-}
-
-.status.absent {
-    color: var(--red);
-
-    background:
-        rgba(215,68,68,.10);
-}
-
-.status.manual {
-    color: var(--orange);
-
-    background:
-        rgba(210,139,24,.12);
-}
-
-/* ---------------- ADMIN ---------------- */
-
-.admin-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 18px;
-}
-
-.admin-action {
-    padding: 23px;
-
-    border-radius: 19px;
-
-    background: white;
-
-    box-shadow: var(--shadow);
-
-    border: 1px solid #edf1f7;
-
-    transition: .2s;
-}
-
-.admin-action:hover {
-    transform: translateY(-3px);
-
-    box-shadow: var(--shadow-hover);
-}
-
-.admin-icon {
-    width: 46px;
-    height: 46px;
-
-    border-radius: 14px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: var(--blue-light);
-
-    color: var(--blue);
-
-    margin-bottom: 15px;
-
-    font-size: 20px;
-}
-
-.admin-action h3 {
-    font-size: 16px;
-}
-
-.admin-action p {
-    margin-top: 5px;
-
-    color: var(--muted);
-
-    font-size: 13px;
-}
-
-/* ---------------- MODAL ---------------- */
-
-.modal {
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 999;
-
-    display: none;
-
-    align-items: center;
-    justify-content: center;
-
-    padding: 20px;
-
-    background:
-        rgba(4,18,38,.48);
-
-    backdrop-filter: blur(8px);
-}
-
-.modal.active {
-    display: flex;
-}
-
-.modal-card {
-    width: min(500px, 100%);
-
-    padding: 28px;
-
-    border-radius: 24px;
-
-    background: white;
-
-    box-shadow:
-        0 35px 80px rgba(0,0,0,.22);
-
-    animation:
-        modalIn .25s ease;
-}
-
-@keyframes modalIn {
-    from {
-        transform: translateY(15px) scale(.97);
-        opacity: 0;
+@media(max-width:430px){
+    .stats-grid{
+        grid-template-columns:1fr;
     }
 
-    to {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
-}
-
-/* ---------------- TOAST ---------------- */
-
-.toast {
-    position: fixed;
-
-    right: 20px;
-    bottom: 20px;
-
-    z-index: 2000;
-
-    max-width: 350px;
-
-    padding: 15px 18px;
-
-    border-radius: 14px;
-
-    color: white;
-
-    background:
-        #162033;
-
-    box-shadow:
-        0 15px 35px rgba(0,0,0,.2);
-
-    transform:
-        translateY(30px);
-
-    opacity: 0;
-
-    pointer-events: none;
-
-    transition: .25s;
-}
-
-.toast.show {
-    transform:
-        translateY(0);
-
-    opacity: 1;
-}
-
-/* ---------------- MOBILE ---------------- */
-
-@media(max-width: 900px) {
-
-    .stats-grid {
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
-
-    .content-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .admin-grid {
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
-}
-
-@media(max-width: 600px) {
-
-    .login-card {
-        padding: 28px 20px;
-    }
-
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .admin-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .main {
-        padding-top: 22px;
-    }
-
-    .card {
-        padding: 20px;
-        border-radius: 19px;
-    }
-
-    .brand-text span {
-        display: none;
-    }
-
-    .topbar {
-        height: 65px;
-    }
-
-    .topbar-inner {
-        width: calc(100% - 18px);
+    .profile-area .logout-btn{
+        font-size:12px;
     }
 }
 </style>
@@ -1328,164 +747,241 @@ td {
 <body>
 
 <div id="app"></div>
-
 <div id="toast" class="toast"></div>
 
-<!-- ======================================================
-     JAVASCRIPT
-     ====================================================== -->
-
 <script>
+
+/* =========================================================
+   NDC COLLEGE LOCATION
+   ========================================================= */
+
+const NDC_LOCATION = {
+    latitude: 13.116383,
+    longitude: 77.562075
+};
+
+/*
+   Attendance zone radius.
+   Students within this distance from the college coordinates
+   are considered inside the attendance zone.
+*/
+const NDC_RADIUS_METERS = 200;
+
 
 /* =========================================================
    APP STATE
    ========================================================= */
 
-const app = document.getElementById("app");
-
 let currentRole = "student";
+let currentUser = null;
 
-let locationInside = true;
+let locationInside = false;
+let currentDistance = null;
+let currentAccuracy = null;
 
-let attendanceStarted = false;
+let countdownInterval = null;
+let attendanceTime = 300;
 
-let attendanceSeconds = 300;
 
-let countdownInterval;
+/* =========================================================
+   SAMPLE DATA
+   ========================================================= */
+
+const studentData = {
+    name: "Student User",
+    id: "NDC2026001",
+    department: "B.Sc Computer Science",
+    semester: "Semester 3",
+    attendance: "92%",
+    present: 46,
+    total: 50
+};
+
+const classes = [
+    {
+        subject:"Web Technology",
+        teacher:"Dr. Ravi Kumar",
+        time:"09:30 AM",
+        room:"Room 201",
+        status:"Present"
+    },
+    {
+        subject:"Database Management",
+        teacher:"Prof. Anitha",
+        time:"11:00 AM",
+        room:"Room 204",
+        status:"Present"
+    },
+    {
+        subject:"Computer Networks",
+        teacher:"Prof. Suresh",
+        time:"02:00 PM",
+        room:"Room 301",
+        status:"Pending"
+    }
+];
+
+
+/* =========================================================
+   UTILITY
+   ========================================================= */
+
+function escapeHTML(value){
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
 
 
 /* =========================================================
    LOGIN
    ========================================================= */
 
-function renderLogin() {
+function renderLogin(){
 
-    app.innerHTML = `
+    document.getElementById("app").innerHTML = `
+        <div class="login-page">
 
-    <div class="login-screen">
+            <div class="login-card">
 
-        <div class="login-card">
+                <div class="brand">
 
-            <div class="logo-box">
-                NDC
-            </div>
+                    <div class="brand-logo">
+                        NDC
+                    </div>
 
-            <div class="login-title">
-                <h1>NDC Attendance</h1>
-                <p>Digital Attendance Management System</p>
-            </div>
+                    <h1>NDC Attendance</h1>
 
-            <div class="role-switch">
+                    <p>
+                        Nagarjuna Degree College
+                    </p>
+
+                </div>
+
+
+                <div class="role-switch">
+
+                    <button
+                        id="roleStudent"
+                        class="${currentRole === "student" ? "active" : ""}"
+                        onclick="setRole('student')">
+                        Student
+                    </button>
+
+                    <button
+                        id="roleTeacher"
+                        class="${currentRole === "teacher" ? "active" : ""}"
+                        onclick="setRole('teacher')">
+                        Teacher
+                    </button>
+
+                    <button
+                        id="roleAdmin"
+                        class="${currentRole === "admin" ? "active" : ""}"
+                        onclick="setRole('admin')">
+                        Admin
+                    </button>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        ${currentRole === "student"
+                            ? "Student ID"
+                            : currentRole === "teacher"
+                            ? "Teacher ID"
+                            : "Admin ID"}
+                    </label>
+
+                    <input
+                        id="loginId"
+                        placeholder="Enter your ID"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Password</label>
+
+                    <input
+                        id="loginPassword"
+                        type="password"
+                        placeholder="Enter password"
+                    >
+
+                </div>
+
 
                 <button
-                    class="role-btn active"
-                    onclick="setRole('student', this)">
-                    Student
+                    class="primary-btn"
+                    onclick="login()">
+                    Login
                 </button>
 
-                <button
-                    class="role-btn"
-                    onclick="setRole('teacher', this)">
-                    Teacher
-                </button>
 
-                <button
-                    class="role-btn"
-                    onclick="setRole('admin', this)">
-                    Admin
-                </button>
+                <div class="demo-note">
+                    Demo login: enter any ID and password
+                </div>
 
             </div>
-
-            <div class="form-group">
-
-                <label>Email / ID</label>
-
-                <input
-                    class="form-input"
-                    id="loginEmail"
-                    placeholder="Enter your email or ID">
-
-            </div>
-
-            <div class="form-group">
-
-                <label>Password</label>
-
-                <input
-                    class="form-input"
-                    type="password"
-                    placeholder="Enter password">
-
-            </div>
-
-            <button
-                class="primary-btn"
-                onclick="login()">
-
-                Sign In
-
-            </button>
-
-            <p style="
-                text-align:center;
-                margin-top:18px;
-                color:#718096;
-                font-size:12px;
-            ">
-                NDC • Secure Digital Campus
-            </p>
 
         </div>
-
-    </div>
-
     `;
-
 }
 
 
-/* =========================================================
-   ROLE
-   ========================================================= */
-
-function setRole(role, button) {
+function setRole(role){
 
     currentRole = role;
 
-    document
-        .querySelectorAll(".role-btn")
-        .forEach(btn => btn.classList.remove("active"));
-
-    button.classList.add("active");
-
+    renderLogin();
 }
 
 
-/* =========================================================
-   LOGIN
-   ========================================================= */
+function login(){
 
-function login() {
+    const id =
+        document.getElementById("loginId").value.trim();
 
-    showToast("Login successful");
+    const password =
+        document.getElementById("loginPassword").value.trim();
 
-    setTimeout(() => {
+    if(!id || !password){
 
-        if(currentRole === "student") {
-            renderStudent();
-        }
+        showToast(
+            "Please enter ID and password.",
+            "error"
+        );
 
-        if(currentRole === "teacher") {
-            renderTeacher();
-        }
+        return;
+    }
 
-        if(currentRole === "admin") {
-            renderAdmin();
-        }
+    currentUser = {
+        id:id,
+        name:
+            currentRole === "student"
+            ? "Student User"
+            : currentRole === "teacher"
+            ? "Teacher User"
+            : "Administrator"
+    };
 
-    }, 350);
-
+    if(currentRole === "student"){
+        renderStudent();
+    }
+    else if(currentRole === "teacher"){
+        renderTeacher();
+    }
+    else{
+        renderAdmin();
+    }
 }
 
 
@@ -1493,78 +989,58 @@ function login() {
    TOP BAR
    ========================================================= */
 
-function topbar(name, role) {
+function topbar(){
 
     return `
 
-    <div class="topbar">
+        <div class="topbar">
 
-        <div class="topbar-inner">
+            <div class="top-brand">
 
-            <div class="brand">
-
-                <div class="brand-icon">
-                    N
+                <div class="top-logo">
+                    NDC
                 </div>
 
-                <div class="brand-text">
-
+                <div>
                     <strong>NDC Attendance</strong>
-
-                    <span>
-                        Nagarjuna Degree College
-                    </span>
-
+                    <small> Nagarjuna Degree College</small>
                 </div>
 
             </div>
 
-            <div class="user-menu">
 
-                <div style="
-                    text-align:right;
-                    display:none;
-                " class="desktop-user">
-
-                    <strong style="
-                        font-size:13px;
-                    ">
-                        ${name}
-                    </strong>
-
-                    <div style="
-                        font-size:11px;
-                        color:#718096;
-                    ">
-                        ${role}
-                    </div>
-
-                </div>
+            <div class="profile-area">
 
                 <div class="avatar">
-                    ${name.charAt(0)}
+                    ${currentUser
+                        ? escapeHTML(currentUser.name.charAt(0).toUpperCase())
+                        : "U"}
                 </div>
 
                 <button
-                    class="secondary-btn"
-                    onclick="renderLogin()"
-                    style="
-                        min-height:40px;
-                        padding:0 12px;
-                    ">
-
+                    class="logout-btn"
+                    onclick="logout()">
                     Logout
-
                 </button>
 
             </div>
 
         </div>
-
-    </div>
-
     `;
+}
 
+
+function logout(){
+
+    currentUser = null;
+    locationInside = false;
+    currentDistance = null;
+
+    if(countdownInterval){
+        clearInterval(countdownInterval);
+    }
+
+    renderLogin();
 }
 
 
@@ -1572,177 +1048,203 @@ function topbar(name, role) {
    STUDENT DASHBOARD
    ========================================================= */
 
-function renderStudent() {
+function renderStudent(){
 
-    app.innerHTML = `
+    document.getElementById("app").innerHTML = `
 
-    <div class="app-layout">
+        <div class="app-shell">
 
-        ${topbar("Student", "Student")}
+            ${topbar()}
 
-        <main class="main">
+            <main class="page">
 
-            <div class="page-heading">
+                <div class="page-title">
 
-                <h1>Good morning, Student 👋</h1>
+                    <h2>
+                        Welcome, ${escapeHTML(studentData.name)}
+                    </h2>
 
-                <p>
-                    BCA • 5th Semester • NDC
-                </p>
+                    <p>
+                        Student attendance dashboard
+                    </p>
 
-            </div>
+                </div>
 
 
-            <div class="stats-grid">
+                <div class="grid stats-grid">
 
-                <div class="card stat-card">
+                    <div class="card stat-card">
 
-                    <div class="stat-icon">
-                        ✓
+                        <div class="stat-label">
+                            Attendance
+                        </div>
+
+                        <div class="stat-value">
+                            ${studentData.attendance}
+                        </div>
+
+                        <div class="stat-extra">
+                            Good attendance
+                        </div>
+
                     </div>
 
-                    <div class="stat-value">
-                        86%
+
+                    <div class="card stat-card">
+
+                        <div class="stat-label">
+                            Present
+                        </div>
+
+                        <div class="stat-value">
+                            ${studentData.present}
+                        </div>
+
+                        <div class="stat-extra">
+                            Classes attended
+                        </div>
+
                     </div>
 
-                    <div class="stat-label">
-                        Overall Attendance
+
+                    <div class="card stat-card">
+
+                        <div class="stat-label">
+                            Total Classes
+                        </div>
+
+                        <div class="stat-value">
+                            ${studentData.total}
+                        </div>
+
+                        <div class="stat-extra">
+                            Recorded classes
+                        </div>
+
+                    </div>
+
+
+                    <div class="card stat-card">
+
+                        <div class="stat-label">
+                            Student ID
+                        </div>
+
+                        <div class="stat-value"
+                             style="font-size:21px">
+                            ${studentData.id}
+                        </div>
+
+                        <div class="stat-extra">
+                            Active account
+                        </div>
+
                     </div>
 
                 </div>
 
 
-                <div class="card stat-card">
-
-                    <div class="stat-icon">
-                        ✓
-                    </div>
-
-                    <div class="stat-value">
-                        42
-                    </div>
-
-                    <div class="stat-label">
-                        Present Days
-                    </div>
-
-                </div>
+                <br>
 
 
-                <div class="card stat-card">
+                <div class="grid dashboard-grid">
 
-                    <div class="stat-icon">
-                        !
-                    </div>
+                    <div class="card">
 
-                    <div class="stat-value">
-                        7
-                    </div>
+                        <div class="section-title">
 
-                    <div class="stat-label">
-                        Absent Days
-                    </div>
-
-                </div>
-
-
-                <div class="card stat-card">
-
-                    <div class="stat-icon">
-                        %
-                    </div>
-
-                    <div class="stat-value">
-                        49
-                    </div>
-
-                    <div class="stat-label">
-                        Total Classes
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="content-grid">
-
-                <!-- ATTENDANCE ZONE -->
-
-                <div class="card zone-card">
-
-                    <div class="zone-header">
-
-                        <div class="zone-title">
-
-                            <h2>Attendance Zone</h2>
-
-                            <p>
-                                Your location must be inside
-                                the NDC campus zone.
-                            </p>
+                            <h3>
+                                Today's Classes
+                            </h3>
 
                         </div>
 
-                        <div
-                            id="zoneStatus"
-                            class="zone-status inside">
+                        <div class="class-list">
 
-                            <span class="zone-dot"></span>
-
-                            Inside Zone
+                            ${classes.map(classItem).join("")}
 
                         </div>
 
                     </div>
 
 
-                    <div class="zone-visual">
+                    <div class="card zone-card">
 
-                        <div class="zone-circle">
+                        <div class="section-title">
 
-                            <div class="zone-pin">
-                                📍
+                            <h3>
+                                Attendance Zone
+                            </h3>
+
+                            <button
+                                class="secondary-btn"
+                                onclick="checkAttendanceZone()">
+                                Refresh
+                            </button>
+
+                        </div>
+
+
+                        <div class="zone-status">
+
+                            <div
+                                id="zoneDot"
+                                class="zone-dot">
+                            </div>
+
+                            <div>
+
+                                <div
+                                    id="zoneMain"
+                                    class="zone-main">
+                                    Checking location...
+                                </div>
+
+                                <div
+                                    id="zoneSub"
+                                    class="zone-sub">
+                                    Please allow GPS access.
+                                </div>
+
                             </div>
 
                         </div>
 
-                    </div>
 
+                        <div class="location-details">
 
-                    <div style="
-                        display:flex;
-                        align-items:center;
-                        justify-content:space-between;
-                        gap:15px;
-                    ">
-
-                        <div>
-
-                            <strong id="zoneMessage">
-                                You are inside NDC campus
+                            <strong>
+                                College Attendance Zone
                             </strong>
 
-                            <p style="
-                                margin-top:5px;
-                                color:#718096;
-                                font-size:12px;
-                            ">
-                                Attendance scanning is available.
-                            </p>
+                            <br>
+
+                            Latitude:
+                            ${NDC_LOCATION.latitude}
+
+                            <br>
+
+                            Longitude:
+                            ${NDC_LOCATION.longitude}
+
+                            <br>
+
+                            Radius:
+                            ${NDC_RADIUS_METERS} meters
 
                         </div>
 
-                        <button
-                            class="primary-btn"
-                            style="
-                                width:auto;
-                                padding:0 18px;
-                            "
-                            onclick="openScanner()"
-                            id="scanBtn">
 
-                            📷 Scan
+                        <br>
+
+
+                        <button
+                            id="scannerButton"
+                            class="primary-btn"
+                            onclick="openScanner()"
+                            disabled>
+
+                            Checking location...
 
                         </button>
 
@@ -1750,486 +1252,887 @@ function renderStudent() {
 
                 </div>
 
+            </main>
 
-                <!-- TODAY -->
+        </div>
+    `;
+
+    checkAttendanceZone();
+}
+
+
+/* =========================================================
+   CLASS ITEM
+   ========================================================= */
+
+function classItem(item){
+
+    const statusClass =
+        item.status === "Present"
+        ? "present"
+        : item.status === "Absent"
+        ? "absent"
+        : "pending";
+
+    return `
+
+        <div class="class-item">
+
+            <div class="class-info">
+
+                <strong>
+                    ${escapeHTML(item.subject)}
+                </strong>
+
+                <span>
+                    ${escapeHTML(item.teacher)}
+                    •
+                    ${escapeHTML(item.time)}
+                    •
+                    ${escapeHTML(item.room)}
+                </span>
+
+            </div>
+
+
+            <div
+                class="status-pill ${statusClass}">
+                ${escapeHTML(item.status)}
+            </div>
+
+        </div>
+    `;
+}
+
+
+/* =========================================================
+   GEOLOCATION
+   ========================================================= */
+
+function calculateDistance(
+    lat1,
+    lon1,
+    lat2,
+    lon2
+){
+
+    const earthRadius = 6371000;
+
+    const toRadians =
+        degrees => degrees * Math.PI / 180;
+
+    const dLat =
+        toRadians(lat2 - lat1);
+
+    const dLon =
+        toRadians(lon2 - lon1);
+
+    const a =
+        Math.sin(dLat / 2) ** 2 +
+        Math.cos(toRadians(lat1)) *
+        Math.cos(toRadians(lat2)) *
+        Math.sin(dLon / 2) ** 2;
+
+    const c =
+        2 *
+        Math.atan2(
+            Math.sqrt(a),
+            Math.sqrt(1 - a)
+        );
+
+    return earthRadius * c;
+}
+
+
+/* =========================================================
+   CHECK ATTENDANCE ZONE
+   ========================================================= */
+
+function checkAttendanceZone(){
+
+    const zoneMain =
+        document.getElementById("zoneMain");
+
+    const zoneSub =
+        document.getElementById("zoneSub");
+
+    const scannerButton =
+        document.getElementById("scannerButton");
+
+    const zoneDot =
+        document.getElementById("zoneDot");
+
+    if(!zoneMain || !scannerButton){
+        return;
+    }
+
+
+    zoneMain.textContent =
+        "Checking location...";
+
+    zoneSub.textContent =
+        "Please allow location access.";
+
+    scannerButton.disabled = true;
+
+    scannerButton.textContent =
+        "Checking location...";
+
+    zoneDot.className =
+        "zone-dot";
+
+
+    if(!navigator.geolocation){
+
+        zoneMain.textContent =
+            "GPS not supported";
+
+        zoneSub.textContent =
+            "Your browser does not support location services.";
+
+        setOutsideZone();
+
+        return;
+    }
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position){
+
+            const latitude =
+                position.coords.latitude;
+
+            const longitude =
+                position.coords.longitude;
+
+            const accuracy =
+                position.coords.accuracy;
+
+            const distance =
+                calculateDistance(
+                    latitude,
+                    longitude,
+                    NDC_LOCATION.latitude,
+                    NDC_LOCATION.longitude
+                );
+
+
+            currentDistance = distance;
+            currentAccuracy = accuracy;
+
+
+            if(distance <= NDC_RADIUS_METERS){
+
+                setInsideZone(
+                    distance,
+                    accuracy
+                );
+
+            }
+            else{
+
+                setOutsideZone(
+                    distance
+                );
+
+            }
+
+        },
+
+        function(error){
+
+            locationInside = false;
+
+            zoneMain.textContent =
+                "Location unavailable";
+
+            scannerButton.disabled = true;
+
+            scannerButton.textContent =
+                "Location Required";
+
+            zoneDot.className =
+                "zone-dot outside";
+
+
+            if(error.code === 1){
+
+                zoneSub.textContent =
+                    "Location permission denied. Please allow GPS access.";
+
+            }
+            else{
+
+                zoneSub.textContent =
+                    "Unable to get your current location. Try again.";
+
+            }
+
+        },
+
+        {
+            enableHighAccuracy:true,
+            timeout:10000,
+            maximumAge:0
+        }
+    );
+}
+
+
+/* =========================================================
+   INSIDE ZONE
+   ========================================================= */
+
+function setInsideZone(
+    distance,
+    accuracy
+){
+
+    locationInside = true;
+
+    const zoneMain =
+        document.getElementById("zoneMain");
+
+    const zoneSub =
+        document.getElementById("zoneSub");
+
+    const scannerButton =
+        document.getElementById("scannerButton");
+
+    const zoneDot =
+        document.getElementById("zoneDot");
+
+
+    if(!zoneMain){
+        return;
+    }
+
+
+    zoneMain.textContent =
+        "You are inside the Attendance Zone";
+
+    zoneSub.textContent =
+        `Distance: ${Math.round(distance)} m • GPS accuracy: ±${Math.round(accuracy)} m`;
+
+    zoneDot.className =
+        "zone-dot inside";
+
+
+    scannerButton.disabled = false;
+
+    scannerButton.textContent =
+        "Open QR Scanner";
+}
+
+
+/* =========================================================
+   OUTSIDE ZONE
+   ========================================================= */
+
+function setOutsideZone(distance){
+
+    locationInside = false;
+
+    const zoneMain =
+        document.getElementById("zoneMain");
+
+    const zoneSub =
+        document.getElementById("zoneSub");
+
+    const scannerButton =
+        document.getElementById("scannerButton");
+
+    const zoneDot =
+        document.getElementById("zoneDot");
+
+
+    if(!zoneMain){
+        return;
+    }
+
+
+    zoneMain.textContent =
+        "You are outside the Attendance Zone";
+
+    zoneSub.textContent =
+        `You are approximately ${Math.round(distance)} m from the college.`;
+
+    zoneDot.className =
+        "zone-dot outside";
+
+
+    scannerButton.disabled = true;
+
+    scannerButton.textContent =
+        "Scanner Locked";
+}
+
+
+/* =========================================================
+   OPEN SCANNER
+   ========================================================= */
+
+function openScanner(){
+
+    if(!locationInside){
+
+        showToast(
+            "You are outside the Attendance Zone. Scanner is locked.",
+            "error"
+        );
+
+        checkAttendanceZone();
+
+        return;
+    }
+
+
+    document.getElementById("app").innerHTML = `
+
+        <div class="app-shell">
+
+            ${topbar()}
+
+            <main class="page">
+
+                <div class="page-title">
+
+                    <h2>
+                        Scan Attendance QR
+                    </h2>
+
+                    <p>
+                        Scan the QR displayed by your teacher.
+                    </p>
+
+                </div>
+
+
+                <div class="card scanner-box">
+
+                    <h3>
+                        Attendance Scanner
+                    </h3>
+
+                    <p style="
+                        color:var(--muted);
+                        margin-top:6px;
+                        font-size:13px;
+                    ">
+                        Make sure the QR is clearly visible.
+                    </p>
+
+
+                    <div class="scanner-frame">
+
+                        <div class="fake-qr"></div>
+
+                        <div class="scan-line"></div>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            color:var(--green);
+                            font-weight:800;
+                            margin-bottom:15px;
+                        ">
+                        ✓ Attendance Zone Verified
+                    </div>
+
+
+                    <button
+                        class="primary-btn"
+                        onclick="simulateScan()">
+                        Scan QR
+                    </button>
+
+
+                    <br><br>
+
+
+                    <button
+                        class="secondary-btn"
+                        onclick="renderStudent()">
+                        Cancel
+                    </button>
+
+                </div>
+
+            </main>
+
+        </div>
+    `;
+}
+
+
+/* =========================================================
+   SIMULATED QR SCAN
+   ========================================================= */
+
+function simulateScan(){
+
+    showToast(
+        "Verifying your location...",
+        ""
+    );
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position){
+
+            const distance =
+                calculateDistance(
+                    position.coords.latitude,
+                    position.coords.longitude,
+                    NDC_LOCATION.latitude,
+                    NDC_LOCATION.longitude
+                );
+
+
+            if(distance > NDC_RADIUS_METERS){
+
+                showToast(
+                    "Attendance blocked: You are outside the college zone.",
+                    "error"
+                );
+
+                renderStudent();
+
+                return;
+            }
+
+
+            setTimeout(function(){
+
+                showAttendanceSuccess();
+
+            },800);
+
+        },
+
+        function(){
+
+            showToast(
+                "Unable to verify your location.",
+                "error"
+            );
+
+        },
+
+        {
+            enableHighAccuracy:true,
+            timeout:10000,
+            maximumAge:0
+        }
+    );
+}
+
+
+/* =========================================================
+   ATTENDANCE SUCCESS
+   ========================================================= */
+
+function showAttendanceSuccess(){
+
+    document.getElementById("app").innerHTML = `
+
+        <div class="app-shell">
+
+            ${topbar()}
+
+            <main class="page">
+
+                <div
+                    class="card"
+                    style="
+                        max-width:550px;
+                        margin:60px auto;
+                        text-align:center;
+                    ">
+
+                    <div
+                        style="
+                            width:85px;
+                            height:85px;
+                            margin:auto;
+                            border-radius:50%;
+                            background:#e8f7f0;
+                            color:var(--green);
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            font-size:40px;
+                            font-weight:900;
+                        ">
+                        ✓
+                    </div>
+
+
+                    <h2 style="margin-top:20px;">
+                        Attendance Marked
+                    </h2>
+
+
+                    <p
+                        style="
+                            color:var(--muted);
+                            margin-top:8px;
+                        ">
+                        Your attendance has been successfully recorded.
+                    </p>
+
+
+                    <div
+                        style="
+                            margin-top:20px;
+                            padding:15px;
+                            background:#f8fafc;
+                            border-radius:14px;
+                            text-align:left;
+                            line-height:1.9;
+                            font-size:13px;
+                        ">
+
+                        <strong>
+                            Subject:
+                        </strong>
+                        Web Technology
+
+                        <br>
+
+                        <strong>
+                            Student ID:
+                        </strong>
+                        ${escapeHTML(studentData.id)}
+
+                        <br>
+
+                        <strong>
+                            Location:
+                        </strong>
+                        Verified
+
+                        <br>
+
+                        <strong>
+                            Status:
+                        </strong>
+                        Present
+
+                    </div>
+
+
+                    <br>
+
+
+                    <button
+                        class="primary-btn"
+                        onclick="renderStudent()">
+                        Back to Dashboard
+                    </button>
+
+                </div>
+
+            </main>
+
+        </div>
+    `;
+}
+
+
+/* =========================================================
+   TEACHER DASHBOARD
+   ========================================================= */
+
+function renderTeacher(){
+
+    document.getElementById("app").innerHTML = `
+
+        <div class="app-shell">
+
+            ${topbar()}
+
+            <main class="page">
+
+                <div class="page-title">
+
+                    <h2>
+                        Teacher Dashboard
+                    </h2>
+
+                    <p>
+                        Start and manage live attendance sessions.
+                    </p>
+
+                </div>
+
+
+                <div class="grid stats-grid">
+
+                    ${adminStat("Today's Classes","4")}
+                    ${adminStat("Attendance Sessions","2")}
+                    ${adminStat("Students Present","87")}
+                    ${adminStat("Pending","6")}
+
+                </div>
+
+
+                <br>
+
 
                 <div class="card">
 
-                    <div style="
-                        display:flex;
-                        justify-content:space-between;
-                        align-items:center;
-                        margin-bottom:20px;
-                    ">
+                    <div class="section-title">
+
+                        <h3>
+                            Start Live Attendance
+                        </h3>
+
+                    </div>
+
+
+                    <div class="grid dashboard-grid">
 
                         <div>
 
-                            <h2 style="
-                                font-size:19px;
-                            ">
-                                Today's Classes
-                            </h2>
+                            <div class="form-group">
 
-                            <p style="
-                                margin-top:5px;
-                                color:#718096;
-                                font-size:12px;
+                                <label>
+                                    Select Class
+                                </label>
+
+                                <select id="teacherClass">
+
+                                    <option>
+                                        B.Sc Computer Science - Semester 3
+                                    </option>
+
+                                    <option>
+                                        BCA - Semester 3
+                                    </option>
+
+                                    <option>
+                                        B.Com - Semester 3
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Select Subject
+                                </label>
+
+                                <select id="teacherSubject">
+
+                                    <option>
+                                        Web Technology
+                                    </option>
+
+                                    <option>
+                                        Database Management
+                                    </option>
+
+                                    <option>
+                                        Computer Networks
+                                    </option>
+
+                                    <option>
+                                        Operating Systems
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <button
+                                class="primary-btn"
+                                onclick="startAttendance()">
+
+                                Start Attendance
+
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            style="
+                                background:var(--blue-light);
+                                border-radius:18px;
+                                padding:20px;
                             ">
-                                Wednesday, 23 September
+
+                            <strong>
+                                Attendance Rules
+                            </strong>
+
+                            <p
+                                style="
+                                    color:var(--muted);
+                                    font-size:13px;
+                                    line-height:1.7;
+                                    margin-top:10px;
+                                ">
+
+                                • Students must be inside the
+                                college Attendance Zone.
+
+                                <br>
+
+                                • QR sessions are temporary.
+
+                                <br>
+
+                                • Duplicate attendance is blocked.
+
+                                <br>
+
+                                • Teacher can end the session anytime.
+
                             </p>
 
                         </div>
 
                     </div>
 
+                </div>
 
-                    <div style="
-                        padding:15px;
-                        border-radius:15px;
-                        background:#f5f8fd;
-                        margin-bottom:10px;
-                    ">
+            </main>
 
-                        <strong>
-                            10:00 AM
-                        </strong>
-
-                        <p style="
-                            color:#718096;
-                            font-size:13px;
-                            margin-top:4px;
-                        ">
-                            Web Programming
-                        </p>
-
-                    </div>
+        </div>
+    `;
+}
 
 
-                    <div style="
-                        padding:15px;
-                        border-radius:15px;
-                        background:#f5f8fd;
-                        margin-bottom:10px;
-                    ">
+/* =========================================================
+   START ATTENDANCE
+   ========================================================= */
 
-                        <strong>
-                            12:00 PM
-                        </strong>
+function startAttendance(){
 
-                        <p style="
-                            color:#718096;
-                            font-size:13px;
-                            margin-top:4px;
-                        ">
-                            Database Management
-                        </p>
+    const selectedClass =
+        document.getElementById("teacherClass").value;
 
-                    </div>
+    const subject =
+        document.getElementById("teacherSubject").value;
+
+    attendanceTime = 300;
+
+    renderQRSession(
+        selectedClass,
+        subject
+    );
+
+    startCountdown();
+}
 
 
-                    <div style="
-                        padding:15px;
-                        border-radius:15px;
-                        background:#f5f8fd;
-                    ">
+/* =========================================================
+   QR SESSION
+   ========================================================= */
 
-                        <strong>
-                            2:00 PM
-                        </strong>
+function renderQRSession(
+    selectedClass,
+    subject
+){
 
-                        <p style="
-                            color:#718096;
-                            font-size:13px;
-                            margin-top:4px;
-                        ">
-                            Computer Networks
-                        </p>
+    document.getElementById("app").innerHTML = `
 
-                    </div>
+        <div class="app-shell">
+
+            ${topbar()}
+
+            <main class="page">
+
+                <div class="page-title">
+
+                    <h2>
+                        Live Attendance Session
+                    </h2>
+
+                    <p>
+                        ${escapeHTML(subject)}
+                    </p>
 
                 </div>
 
-            </div>
 
-
-            <!-- HISTORY -->
-
-            <div class="card" style="
-                margin-top:20px;
-            ">
-
-                <div style="
-                    display:flex;
-                    justify-content:space-between;
-                    align-items:center;
-                    margin-bottom:18px;
-                ">
+                <div class="card qr-session">
 
                     <div>
 
-                        <h2 style="
-                            font-size:19px;
-                        ">
-                            Recent Attendance
-                        </h2>
+                        <strong>
+                            ${escapeHTML(selectedClass)}
+                        </strong>
 
-                        <p style="
-                            color:#718096;
+                        <div class="session-note">
+                            Students can scan this QR
+                            while inside the college zone.
+                        </div>
+
+                    </div>
+
+
+                    <div class="qr-display">
+
+                        <div
+                            id="qrPattern"
+                            class="qr-pattern">
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            color:var(--muted);
                             font-size:12px;
-                            margin-top:5px;
                         ">
-                            Your latest attendance records
-                        </p>
-
+                        Session expires in
                     </div>
 
-                    <button
-                        class="secondary-btn"
-                        onclick="showHistory()">
 
-                        View All
-
-                    </button>
-
-                </div>
-
-
-                <div class="table-wrap">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-                                <th>Date</th>
-                                <th>Subject</th>
-                                <th>Time</th>
-                                <th>Method</th>
-                                <th>Status</th>
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                            <tr>
-                                <td>23 Sep</td>
-                                <td>Web Programming</td>
-                                <td>10:03 AM</td>
-                                <td>QR</td>
-                                <td>
-                                    <span class="status present">
-                                        Present
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>22 Sep</td>
-                                <td>DBMS</td>
-                                <td>12:02 PM</td>
-                                <td>QR</td>
-                                <td>
-                                    <span class="status present">
-                                        Present
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>21 Sep</td>
-                                <td>Networks</td>
-                                <td>2:00 PM</td>
-                                <td>Manual</td>
-                                <td>
-                                    <span class="status manual">
-                                        Present
-                                    </span>
-                                </td>
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </main>
-
-    </div>
-
-    `;
-
-}
-
-
-/* =========================================================
-   SIMULATE LOCATION
-   ========================================================= */
-
-function toggleLocation() {
-
-    locationInside = !locationInside;
-
-    const status =
-        document.getElementById("zoneStatus");
-
-    const message =
-        document.getElementById("zoneMessage");
-
-    const button =
-        document.getElementById("scanBtn");
-
-    if(locationInside) {
-
-        status.className =
-            "zone-status inside";
-
-        status.innerHTML =
-            '<span class="zone-dot"></span> Inside Zone';
-
-        message.textContent =
-            "You are inside NDC campus";
-
-        button.disabled = false;
-
-        button.style.opacity = "1";
-
-    } else {
-
-        status.className =
-            "zone-status outside";
-
-        status.innerHTML =
-            '<span class="zone-dot"></span> Outside Zone';
-
-        message.textContent =
-            "You are outside the attendance zone";
-
-        button.disabled = true;
-
-        button.style.opacity = ".45";
-
-    }
-
-}
-
-
-/* =========================================================
-   SCANNER
-   ========================================================= */
-
-function openScanner() {
-
-    if(!locationInside) {
-
-        showToast(
-            "You are outside the NDC Attendance Zone."
-        );
-
-        return;
-    }
-
-    app.innerHTML = `
-
-    <div class="app-layout">
-
-        ${topbar("Student", "Student")}
-
-        <main class="main">
-
-            <button
-                class="secondary-btn"
-                onclick="renderStudent()">
-
-                ← Back
-
-            </button>
-
-            <div style="
-                text-align:center;
-                margin-top:25px;
-            ">
-
-                <h1>
-                    Scan Attendance
-                </h1>
-
-                <p style="
-                    color:#718096;
-                    margin-top:6px;
-                ">
-                    Scan the QR displayed by your teacher.
-                </p>
-
-            </div>
-
-
-            <div class="scanner-box">
-
-                <div class="camera">
-
-                    <div class="corner tl"></div>
-                    <div class="corner tr"></div>
-                    <div class="corner bl"></div>
-                    <div class="corner br"></div>
-
-                </div>
-
-
-                <div style="
-                    text-align:center;
-                    margin-top:22px;
-                ">
-
-                    <strong>
-                        Position the QR inside the frame
-                    </strong>
-
-                    <p style="
-                        color:#718096;
-                        font-size:12px;
-                        margin-top:6px;
-                    ">
-                        Your location is being verified.
-                    </p>
-
-                </div>
-
-
-                <button
-                    class="primary-btn"
-                    style="
-                        margin-top:20px;
-                    "
-                    onclick="simulateScan()">
-
-                    Simulate QR Scan
-
-                </button>
-
-            </div>
-
-        </main>
-
-    </div>
-
-    `;
-
-}
-
-
-/* =========================================================
-   SCAN RESULT
-   ========================================================= */
-
-function simulateScan() {
-
-    showToast("QR verified. Checking attendance...");
-
-    setTimeout(() => {
-
-        app.innerHTML = `
-
-        <div class="app-layout">
-
-            ${topbar("Student", "Student")}
-
-            <main class="main">
-
-                <div style="
-                    max-width:520px;
-                    margin:70px auto;
-                    text-align:center;
-                ">
-
-                    <div style="
-                        width:100px;
-                        height:100px;
-                        margin:auto;
-
-                        border-radius:50%;
-
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-
-                        font-size:45px;
-
-                        color:white;
-
-                        background:
-                            linear-gradient(
-                                145deg,
-                                #1ba56f,
-                                #087149
-                            );
-
-                        box-shadow:
-                            0 20px 40px
-                            rgba(19,134,92,.25);
-                    ">
-                        ✓
+                    <div
+                        id="timer"
+                        class="timer">
+                        05:00
                     </div>
 
-                    <h1 style="
-                        margin-top:25px;
-                    ">
-                        Attendance Marked
-                    </h1>
 
-                    <p style="
-                        margin-top:8px;
-                        color:#718096;
-                    ">
-                        Your attendance has been
-                        successfully recorded.
+                    <p class="session-note">
+                        QR token refresh simulation enabled.
                     </p>
 
 
-                    <div class="card" style="
-                        margin-top:25px;
-                        text-align:left;
-                    ">
-
-                        <p>
-                            <strong>Student:</strong>
-                            Student
-                        </p>
-
-                        <p style="margin-top:10px;">
-                            <strong>Subject:</strong>
-                            Web Programming
-                        </p>
-
-                        <p style="margin-top:10px;">
-                            <strong>Time:</strong>
-                            10:04 AM
-                        </p>
-
-                        <p style="margin-top:10px;">
-                            <strong>Method:</strong>
-                            Dynamic QR
-                        </p>
-
-                        <p style="margin-top:10px;">
-                            <strong>Location:</strong>
-                            NDC Attendance Zone
-                        </p>
-
-                    </div>
+                    <br>
 
 
                     <button
                         class="primary-btn"
-                        style="
-                            margin-top:20px;
-                        "
-                        onclick="renderStudent()">
+                        onclick="generateQR()">
 
-                        Back to Dashboard
+                        Refresh QR
+
+                    </button>
+
+
+                    <br><br>
+
+
+                    <button
+                        class="secondary-btn"
+                        onclick="endAttendance()">
+
+                        End Attendance
 
                     </button>
 
@@ -2238,513 +2141,56 @@ function simulateScan() {
             </main>
 
         </div>
-
-        `;
-
-    }, 1000);
-
-}
-
-
-/* =========================================================
-   TEACHER DASHBOARD
-   ========================================================= */
-
-function renderTeacher() {
-
-    app.innerHTML = `
-
-    <div class="app-layout">
-
-        ${topbar("Teacher", "Teacher")}
-
-        <main class="main">
-
-            <div class="page-heading">
-
-                <h1>Teacher Dashboard</h1>
-
-                <p>
-                    Manage live classroom attendance.
-                </p>
-
-            </div>
-
-
-            <div class="content-grid">
-
-                <div class="card">
-
-                    <h2>
-                        Start Attendance
-                    </h2>
-
-                    <p style="
-                        color:#718096;
-                        margin-top:6px;
-                        font-size:13px;
-                    ">
-                        Create a live QR attendance session.
-                    </p>
-
-
-                    <div class="form-group"
-                        style="margin-top:22px;">
-
-                        <label>
-                            Select Class
-                        </label>
-
-                        <select class="form-input">
-
-                            <option>
-                                BCA 5th Semester
-                            </option>
-
-                            <option>
-                                BCA 3rd Semester
-                            </option>
-
-                            <option>
-                                B.Com 5th Semester
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label>
-                            Select Subject
-                        </label>
-
-                        <select class="form-input">
-
-                            <option>
-                                Web Programming
-                            </option>
-
-                            <option>
-                                DBMS
-                            </option>
-
-                            <option>
-                                Computer Networks
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <button
-                        class="primary-btn"
-                        onclick="startAttendance()">
-
-                        Start Live Attendance
-
-                    </button>
-
-                </div>
-
-
-                <div class="card">
-
-                    <h2>
-                        Today's Summary
-                    </h2>
-
-                    <div style="
-                        margin-top:20px;
-                        padding:20px;
-                        border-radius:16px;
-                        background:#f5f8fd;
-                    ">
-
-                        <div style="
-                            font-size:32px;
-                            font-weight:900;
-                            color:#0b3d91;
-                        ">
-                            42
-                        </div>
-
-                        <p style="
-                            color:#718096;
-                            font-size:13px;
-                        ">
-                            Students Present
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="card" style="
-                margin-top:20px;
-            ">
-
-                <h2>
-                    Recent Sessions
-                </h2>
-
-                <div class="table-wrap"
-                    style="margin-top:18px;">
-
-                    <table>
-
-                        <thead>
-                            <tr>
-                                <th>Subject</th>
-                                <th>Class</th>
-                                <th>Time</th>
-                                <th>Present</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-
-                            <tr>
-                                <td>DBMS</td>
-                                <td>BCA 5th</td>
-                                <td>12:00 PM</td>
-                                <td>43 / 50</td>
-                                <td>
-                                    <span class="status present">
-                                        Completed
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Networks</td>
-                                <td>BCA 5th</td>
-                                <td>2:00 PM</td>
-                                <td>40 / 50</td>
-                                <td>
-                                    <span class="status present">
-                                        Completed
-                                    </span>
-                                </td>
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </main>
-
-    </div>
-
-    `;
-
-}
-
-
-/* =========================================================
-   TEACHER START ATTENDANCE
-   ========================================================= */
-
-function startAttendance() {
-
-    attendanceStarted = true;
-
-    attendanceSeconds = 300;
-
-    renderQRSession();
-
-    startCountdown();
-
-}
-
-
-/* =========================================================
-   QR SESSION
-   ========================================================= */
-
-function renderQRSession() {
-
-    app.innerHTML = `
-
-    <div class="app-layout">
-
-        ${topbar("Teacher", "Teacher")}
-
-        <main class="main">
-
-            <div style="
-                display:flex;
-                align-items:center;
-                justify-content:space-between;
-                gap:15px;
-                flex-wrap:wrap;
-            ">
-
-                <div>
-
-                    <h1>
-                        Live Attendance
-                    </h1>
-
-                    <p style="
-                        color:#718096;
-                        margin-top:6px;
-                    ">
-                        BCA 5th Semester • Web Programming
-                    </p>
-
-                </div>
-
-                <span class="live-badge">
-                    <span class="live-dot"></span>
-                    LIVE
-                </span>
-
-            </div>
-
-
-            <div class="qr-card card"
-                style="margin-top:25px;">
-
-                <h2>
-                    Scan to Mark Attendance
-                </h2>
-
-                <p style="
-                    color:#718096;
-                    margin-top:7px;
-                ">
-                    Students must be inside the
-                    NDC attendance zone.
-                </p>
-
-
-                <div class="fake-qr"
-                    id="fakeQR">
-                </div>
-
-
-                <h2 id="timer">
-                    05:00
-                </h2>
-
-                <p style="
-                    color:#718096;
-                    font-size:12px;
-                    margin-top:5px;
-                ">
-                    Attendance session remaining
-                </p>
-
-
-                <div style="
-                    display:grid;
-                    grid-template-columns:
-                        repeat(3,1fr);
-                    gap:10px;
-                    margin-top:25px;
-                ">
-
-                    <div style="
-                        padding:15px;
-                        border-radius:14px;
-                        background:#f5f8fd;
-                    ">
-
-                        <strong style="
-                            font-size:22px;
-                            color:#0b3d91;
-                        ">
-                            42
-                        </strong>
-
-                        <p style="
-                            color:#718096;
-                            font-size:11px;
-                        ">
-                            Present
-                        </p>
-
-                    </div>
-
-
-                    <div style="
-                        padding:15px;
-                        border-radius:14px;
-                        background:#f5f8fd;
-                    ">
-
-                        <strong style="
-                            font-size:22px;
-                            color:#d28b18;
-                        ">
-                            5
-                        </strong>
-
-                        <p style="
-                            color:#718096;
-                            font-size:11px;
-                        ">
-                            Pending
-                        </p>
-
-                    </div>
-
-
-                    <div style="
-                        padding:15px;
-                        border-radius:14px;
-                        background:#f5f8fd;
-                    ">
-
-                        <strong style="
-                            font-size:22px;
-                            color:#0b3d91;
-                        ">
-                            50
-                        </strong>
-
-                        <p style="
-                            color:#718096;
-                            font-size:11px;
-                        ">
-                            Total
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <button
-                    class="danger-btn"
-                    style="
-                        width:100%;
-                        margin-top:20px;
-                    "
-                    onclick="endAttendance()">
-
-                    End Attendance
-
-                </button>
-
-            </div>
-
-
-            <div class="card"
-                style="margin-top:20px;">
-
-                <h2>
-                    Live Student List
-                </h2>
-
-                <div class="table-wrap"
-                    style="margin-top:18px;">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-                                <th>Student</th>
-                                <th>Roll No.</th>
-                                <th>Time</th>
-                                <th>Status</th>
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                            <tr>
-                                <td>Rahul Kumar</td>
-                                <td>BCA501</td>
-                                <td>10:01 AM</td>
-                                <td>
-                                    <span class="status present">
-                                        Present
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Anjali</td>
-                                <td>BCA502</td>
-                                <td>10:02 AM</td>
-                                <td>
-                                    <span class="status present">
-                                        Present
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Vikram</td>
-                                <td>BCA503</td>
-                                <td>Waiting</td>
-                                <td>
-                                    <span class="status manual">
-                                        Pending
-                                    </span>
-                                </td>
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </main>
-
-    </div>
-
     `;
 
     generateQR();
-
 }
 
 
 /* =========================================================
-   FAKE QR
+   GENERATE QR
    ========================================================= */
 
-function generateQR() {
+function generateQR(){
 
     const qr =
-        document.getElementById("fakeQR");
+        document.getElementById("qrPattern");
 
-    if(!qr) return;
-
-    qr.innerHTML = "";
-
-    for(let i = 0; i < 225; i++) {
-
-        const cell =
-            document.createElement("div");
-
-        cell.className =
-            Math.random() > .52
-            ? "qr-cell"
-            : "qr-cell white";
-
-        qr.appendChild(cell);
-
+    if(!qr){
+        return;
     }
 
+
+    const random =
+        Math.random()
+        .toString(36)
+        .substring(2,10);
+
+
+    qr.style.background = `
+        repeating-linear-gradient(
+            90deg,
+            #111 0px,
+            #111 ${5 + Math.random()*10}px,
+            transparent ${10 + Math.random()*10}px,
+            transparent ${15 + Math.random()*10}px
+        ),
+        repeating-linear-gradient(
+            0deg,
+            #111 0px,
+            #111 ${5 + Math.random()*10}px,
+            transparent ${10 + Math.random()*10}px,
+            transparent ${15 + Math.random()*10}px
+        ),
+        #fff
+    `;
+
+    qr.dataset.token = random;
+
+    showToast(
+        "New QR token generated.",
+        "success"
+    );
 }
 
 
@@ -2752,48 +2198,51 @@ function generateQR() {
    COUNTDOWN
    ========================================================= */
 
-function startCountdown() {
+function startCountdown(){
 
-    clearInterval(countdownInterval);
+    if(countdownInterval){
+        clearInterval(countdownInterval);
+    }
+
 
     countdownInterval =
-        setInterval(() => {
+        setInterval(function(){
 
-            attendanceSeconds--;
-
-            if(attendanceSeconds <= 0) {
-
-                clearInterval(countdownInterval);
-
-                showToast(
-                    "Attendance session expired."
-                );
-
-                renderTeacher();
-
-                return;
-            }
-
-            const minutes =
-                Math.floor(
-                    attendanceSeconds / 60
-                );
-
-            const seconds =
-                attendanceSeconds % 60;
+            attendanceTime--;
 
             const timer =
                 document.getElementById("timer");
 
-            if(timer) {
-
-                timer.textContent =
-                    `${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
-
+            if(!timer){
+                clearInterval(countdownInterval);
+                return;
             }
 
-        }, 1000);
 
+            const minutes =
+                Math.floor(attendanceTime / 60);
+
+            const seconds =
+                attendanceTime % 60;
+
+
+            timer.textContent =
+                `${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+
+
+            if(attendanceTime <= 0){
+
+                clearInterval(countdownInterval);
+
+                showToast(
+                    "Attendance session expired.",
+                    "error"
+                );
+
+                renderTeacher();
+            }
+
+        },1000);
 }
 
 
@@ -2801,21 +2250,18 @@ function startCountdown() {
    END ATTENDANCE
    ========================================================= */
 
-function endAttendance() {
+function endAttendance(){
 
-    clearInterval(countdownInterval);
-
-    attendanceStarted = false;
+    if(countdownInterval){
+        clearInterval(countdownInterval);
+    }
 
     showToast(
-        "Attendance session ended."
+        "Attendance session ended.",
+        "success"
     );
 
-    setTimeout(
-        renderTeacher,
-        600
-    );
-
+    renderTeacher();
 }
 
 
@@ -2823,499 +2269,493 @@ function endAttendance() {
    ADMIN
    ========================================================= */
 
-function renderAdmin() {
+function renderAdmin(){
 
-    app.innerHTML = `
+    document.getElementById("app").innerHTML = `
 
-    <div class="app-layout">
+        <div class="app-shell">
 
-        ${topbar("Admin", "Administrator")}
+            ${topbar()}
 
-        <main class="main">
+            <main class="page">
 
-            <div class="page-heading">
+                <div class="page-title">
 
-                <h1>
-                    Admin Dashboard
-                </h1>
-
-                <p>
-                    Manage NDC attendance operations.
-                </p>
-
-            </div>
-
-
-            <div class="stats-grid">
-
-                <div class="card stat-card">
-
-                    <div class="stat-icon">
-                        👥
-                    </div>
-
-                    <div class="stat-value">
-                        1,240
-                    </div>
-
-                    <div class="stat-label">
-                        Students
-                    </div>
-
-                </div>
-
-
-                <div class="card stat-card">
-
-                    <div class="stat-icon">
-                        👨‍🏫
-                    </div>
-
-                    <div class="stat-value">
-                        64
-                    </div>
-
-                    <div class="stat-label">
-                        Teachers
-                    </div>
-
-                </div>
-
-
-                <div class="card stat-card">
-
-                    <div class="stat-icon">
-                        ✓
-                    </div>
-
-                    <div class="stat-value">
-                        89%
-                    </div>
-
-                    <div class="stat-label">
-                        Today's Attendance
-                    </div>
-
-                </div>
-
-
-                <div class="card stat-card">
-
-                    <div class="stat-icon">
-                        !
-                    </div>
-
-                    <div class="stat-value">
-                        27
-                    </div>
-
-                    <div class="stat-label">
-                        Manual Overrides
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="admin-grid">
-
-                <div
-                    class="admin-action"
-                    onclick="showToast('Student management opened')">
-
-                    <div class="admin-icon">
-                        👥
-                    </div>
-
-                    <h3>
-                        Students
-                    </h3>
+                    <h2>
+                        Admin Dashboard
+                    </h2>
 
                     <p>
-                        Manage student accounts and classes.
+                        Manage attendance and system operations.
                     </p>
 
                 </div>
 
 
-                <div
-                    class="admin-action"
-                    onclick="showToast('Teacher management opened')">
+                <div class="grid stats-grid">
 
-                    <div class="admin-icon">
-                        👨‍🏫
+                    ${adminStat("Students","1,248")}
+                    ${adminStat("Teachers","68")}
+                    ${adminStat("Today's Attendance","91.8%")}
+                    ${adminStat("Active Sessions","3")}
+
+                </div>
+
+
+                <br>
+
+
+                <div class="card">
+
+                    <div class="section-title">
+
+                        <h3>
+                            Administration
+                        </h3>
+
                     </div>
 
-                    <h3>
-                        Teachers
-                    </h3>
 
-                    <p>
-                        Manage teacher accounts.
-                    </p>
+                    <div class="admin-actions">
 
-                </div>
+                        ${adminAction(
+                            "M",
+                            "Manual Attendance",
+                            "Mark attendance for genuine exceptions.",
+                            "openOverride()"
+                        )}
 
+                        ${adminAction(
+                            "H",
+                            "Attendance History",
+                            "View attendance records.",
+                            "showHistory()"
+                        )}
 
-                <div
-                    class="admin-action"
-                    onclick="showToast('Attendance records opened')">
+                        ${adminAction(
+                            "Z",
+                            "Attendance Zone",
+                            "College GPS zone configuration.",
+                            "showZoneInfo()"
+                        )}
 
-                    <div class="admin-icon">
-                        📊
                     </div>
 
-                    <h3>
-                        Attendance
-                    </h3>
-
-                    <p>
-                        View attendance records and reports.
-                    </p>
-
                 </div>
 
+            </main>
 
-                <div
-                    class="admin-action"
-                    onclick="openOverride()">
-
-                    <div class="admin-icon">
-                        ✎
-                    </div>
-
-                    <h3>
-                        Manual Override
-                    </h3>
-
-                    <p>
-                        Add attendance for approved reasons.
-                    </p>
-
-                </div>
-
-
-                <div
-                    class="admin-action"
-                    onclick="showToast('Class management opened')">
-
-                    <div class="admin-icon">
-                        🏫
-                    </div>
-
-                    <h3>
-                        Classes
-                    </h3>
-
-                    <p>
-                        Manage courses and sections.
-                    </p>
-
-                </div>
-
-
-                <div
-                    class="admin-action"
-                    onclick="showToast('Audit logs opened')">
-
-                    <div class="admin-icon">
-                        🔐
-                    </div>
-
-                    <h3>
-                        Audit Logs
-                    </h3>
-
-                    <p>
-                        Track attendance changes.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="card"
-                style="margin-top:20px;">
-
-                <h2>
-                    Recent Attendance Activity
-                </h2>
-
-                <div class="table-wrap"
-                    style="margin-top:18px;">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-                                <th>Student</th>
-                                <th>Subject</th>
-                                <th>Method</th>
-                                <th>Time</th>
-                                <th>Status</th>
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                            <tr>
-
-                                <td>
-                                    Rahul Kumar
-                                </td>
-
-                                <td>
-                                    Web Programming
-                                </td>
-
-                                <td>
-                                    QR
-                                </td>
-
-                                <td>
-                                    10:02 AM
-                                </td>
-
-                                <td>
-                                    <span class="status present">
-                                        Present
-                                    </span>
-                                </td>
-
-                            </tr>
-
-
-                            <tr>
-
-                                <td>
-                                    Anjali
-                                </td>
-
-                                <td>
-                                    DBMS
-                                </td>
-
-                                <td>
-                                    Admin Override
-                                </td>
-
-                                <td>
-                                    09:45 AM
-                                </td>
-
-                                <td>
-                                    <span class="status manual">
-                                        Manual
-                                    </span>
-                                </td>
-
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </main>
-
-    </div>
-
+        </div>
     `;
-
 }
 
 
 /* =========================================================
-   ADMIN OVERRIDE
+   ADMIN STAT
    ========================================================= */
 
-function openOverride() {
+function adminStat(
+    label,
+    value
+){
 
-    const modal =
-        document.createElement("div");
+    return `
 
-    modal.className = "modal active";
+        <div class="card stat-card">
 
-    modal.id = "overrideModal";
-
-    modal.innerHTML = `
-
-    <div class="modal-card">
-
-        <div style="
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-        ">
-
-            <div>
-
-                <h2>
-                    Manual Attendance
-                </h2>
-
-                <p style="
-                    color:#718096;
-                    margin-top:5px;
-                    font-size:12px;
-                ">
-                    Admin override requires a reason.
-                </p>
-
+            <div class="stat-label">
+                ${escapeHTML(label)}
             </div>
 
-            <button
-                class="secondary-btn"
-                onclick="closeOverride()">
-
-                ✕
-
-            </button>
+            <div class="stat-value">
+                ${escapeHTML(value)}
+            </div>
 
         </div>
-
-
-        <div class="form-group"
-            style="margin-top:22px;">
-
-            <label>
-                Student
-            </label>
-
-            <select class="form-input">
-
-                <option>
-                    Rahul Kumar — BCA501
-                </option>
-
-                <option>
-                    Anjali — BCA502
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label>
-                Subject
-            </label>
-
-            <select class="form-input">
-
-                <option>
-                    Web Programming
-                </option>
-
-                <option>
-                    DBMS
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label>
-                Reason
-            </label>
-
-            <select class="form-input">
-
-                <option>
-                    Medical Reason
-                </option>
-
-                <option>
-                    Official College Work
-                </option>
-
-                <option>
-                    Technical Issue
-                </option>
-
-                <option>
-                    Other
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <div class="form-group">
-
-            <label>
-                Remarks
-            </label>
-
-            <textarea
-                class="form-input"
-                placeholder="Enter details...">
-            </textarea>
-
-        </div>
-
-
-        <button
-            class="primary-btn"
-            onclick="submitOverride()">
-
-            Mark Attendance
-
-        </button>
-
-    </div>
-
     `;
-
-    document.body.appendChild(modal);
-
 }
 
 
-function closeOverride() {
+/* =========================================================
+   ADMIN ACTION
+   ========================================================= */
+
+function adminAction(
+    icon,
+    title,
+    description,
+    action
+){
+
+    return `
+
+        <div
+            class="action-card"
+            onclick="${action}">
+
+            <div class="action-icon">
+                ${escapeHTML(icon)}
+            </div>
+
+            <strong>
+                ${escapeHTML(title)}
+            </strong>
+
+            <span>
+                ${escapeHTML(description)}
+            </span>
+
+        </div>
+    `;
+}
+
+
+/* =========================================================
+   MANUAL OVERRIDE
+   ========================================================= */
+
+function openOverride(){
+
+    document.body.insertAdjacentHTML(
+        "beforeend",
+
+        `
+
+        <div
+            id="overrideModal"
+            class="modal-overlay">
+
+            <div class="modal">
+
+                <div class="modal-header">
+
+                    <h3>
+                        Manual Attendance
+                    </h3>
+
+                    <button
+                        class="close-btn"
+                        onclick="closeOverride()">
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Student ID
+                    </label>
+
+                    <input
+                        id="overrideStudent"
+                        placeholder="NDC2026001">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Subject
+                    </label>
+
+                    <select id="overrideSubject">
+
+                        <option>
+                            Web Technology
+                        </option>
+
+                        <option>
+                            Database Management
+                        </option>
+
+                        <option>
+                            Computer Networks
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Reason
+                    </label>
+
+                    <input
+                        id="overrideReason"
+                        placeholder="Example: GPS issue">
+
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    onclick="submitOverride()">
+
+                    Mark Attendance
+
+                </button>
+
+            </div>
+
+        </div>
+
+        `
+    );
+}
+
+
+function closeOverride(){
 
     const modal =
         document.getElementById("overrideModal");
 
-    if(modal) modal.remove();
-
+    if(modal){
+        modal.remove();
+    }
 }
 
 
-function submitOverride() {
+function submitOverride(){
+
+    const student =
+        document.getElementById("overrideStudent").value.trim();
+
+    const reason =
+        document.getElementById("overrideReason").value.trim();
+
+
+    if(!student || !reason){
+
+        showToast(
+            "Student ID and reason are required.",
+            "error"
+        );
+
+        return;
+    }
+
 
     closeOverride();
 
     showToast(
-        "Manual attendance recorded with audit log."
+        `Attendance manually marked for ${student}.`,
+        "success"
     );
-
 }
 
 
 /* =========================================================
-   HISTORY
+   ATTENDANCE HISTORY
    ========================================================= */
 
-function showHistory() {
+function showHistory(){
 
-    showToast(
-        "Full attendance history opened."
+    document.getElementById("app").innerHTML = `
+
+        <div class="app-shell">
+
+            ${topbar()}
+
+            <main class="page">
+
+                <div class="page-title">
+
+                    <h2>
+                        Attendance History
+                    </h2>
+
+                    <p>
+                        Recent attendance records.
+                    </p>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="class-list">
+
+                        <div class="class-item">
+
+                            <div class="class-info">
+
+                                <strong>
+                                    NDC2026001
+                                </strong>
+
+                                <span>
+                                    Web Technology • Today • 09:30 AM
+                                </span>
+
+                            </div>
+
+                            <div class="status-pill present">
+                                Present
+                            </div>
+
+                        </div>
+
+
+                        <div class="class-item">
+
+                            <div class="class-info">
+
+                                <strong>
+                                    NDC2026002
+                                </strong>
+
+                                <span>
+                                    Database Management • Today • 11:00 AM
+                                </span>
+
+                            </div>
+
+                            <div class="status-pill present">
+                                Present
+                            </div>
+
+                        </div>
+
+
+                        <div class="class-item">
+
+                            <div class="class-info">
+
+                                <strong>
+                                    NDC2026003
+                                </strong>
+
+                                <span>
+                                    Computer Networks • Today • 02:00 PM
+                                </span>
+
+                            </div>
+
+                            <div class="status-pill absent">
+                                Absent
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <br>
+
+
+                    <button
+                        class="secondary-btn"
+                        onclick="renderAdmin()">
+                        Back
+                    </button>
+
+                </div>
+
+            </main>
+
+        </div>
+    `;
+}
+
+
+/* =========================================================
+   ZONE INFO
+   ========================================================= */
+
+function showZoneInfo(){
+
+    document.body.insertAdjacentHTML(
+        "beforeend",
+
+        `
+
+        <div
+            id="zoneModal"
+            class="modal-overlay">
+
+            <div class="modal">
+
+                <div class="modal-header">
+
+                    <h3>
+                        NDC Attendance Zone
+                    </h3>
+
+                    <button
+                        class="close-btn"
+                        onclick="document.getElementById('zoneModal').remove()">
+                        ×
+                    </button>
+
+                </div>
+
+
+                <p
+                    style="
+                        color:var(--muted);
+                        font-size:13px;
+                        line-height:1.8;
+                    ">
+
+                    Students can access the QR scanner only
+                    when their GPS location is within the
+                    configured Attendance Zone.
+
+                </p>
+
+
+                <br>
+
+
+                <div
+                    style="
+                        background:#f8fafc;
+                        border-radius:14px;
+                        padding:16px;
+                        line-height:1.9;
+                        font-size:13px;
+                    ">
+
+                    <strong>
+                        College:
+                    </strong>
+                    Nagarjuna Degree College
+
+                    <br>
+
+                    <strong>
+                        Latitude:
+                    </strong>
+                    ${NDC_LOCATION.latitude}
+
+                    <br>
+
+                    <strong>
+                        Longitude:
+                    </strong>
+                    ${NDC_LOCATION.longitude}
+
+                    <br>
+
+                    <strong>
+                        Radius:
+                    </strong>
+                    ${NDC_RADIUS_METERS} meters
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `
     );
-
 }
 
 
@@ -3323,26 +2763,31 @@ function showHistory() {
    TOAST
    ========================================================= */
 
-function showToast(message) {
+function showToast(
+    message,
+    type = ""
+){
 
     const toast =
         document.getElementById("toast");
 
     toast.textContent = message;
 
-    toast.classList.add("show");
+    toast.className =
+        `toast show ${type}`;
 
-    setTimeout(() => {
 
-        toast.classList.remove("show");
+    setTimeout(function(){
 
-    }, 2600);
+        toast.className =
+            "toast";
 
+    },3000);
 }
 
 
 /* =========================================================
-   START
+   START APP
    ========================================================= */
 
 renderLogin();
