@@ -6,1306 +6,3347 @@
 <title>NDC Attendance System</title>
 
 <style>
-:root{
-  --blue:#0757c8;
-  --dark:#09264f;
-  --light:#f4f8ff;
-  --green:#16a34a;
-  --red:#dc2626;
-  --orange:#f59e0b;
-  --border:#dbe5f3;
-  --text:#172033;
-  --muted:#667085;
+/* =========================================================
+   NDC ATTENDANCE SYSTEM
+   SINGLE-FILE FRONTEND
+   ========================================================= */
+
+:root {
+    --blue: #0b3d91;
+    --blue-dark: #06265f;
+    --blue-light: #eaf2ff;
+    --blue-mid: #1760c5;
+
+    --white: #ffffff;
+    --bg: #f3f6fb;
+
+    --text: #162033;
+    --muted: #718096;
+
+    --green: #13865c;
+    --red: #d74444;
+    --orange: #d28b18;
+
+    --shadow:
+        0 20px 55px rgba(13, 45, 91, .12),
+        0 5px 15px rgba(13, 45, 91, .06);
+
+    --shadow-hover:
+        0 28px 70px rgba(13, 45, 91, .18),
+        0 8px 22px rgba(13, 45, 91, .08);
+
+    --radius: 22px;
+}
+
+/* ---------------- RESET ---------------- */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    font-family:
+        Inter,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    color: var(--text);
+
+    background:
+        radial-gradient(
+            circle at 10% 0%,
+            rgba(23,96,197,.10),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(11,61,145,.08),
+            transparent 30%
+        ),
+        var(--bg);
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* ---------------- APP ---------------- */
+
+#app {
+    min-height: 100vh;
+}
+
+/* ---------------- LOGIN ---------------- */
+
+.login-screen {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.login-screen::before {
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(11,61,145,.14),
+            transparent 70%
+        );
+
+    top: -180px;
+    left: -180px;
+}
+
+.login-screen::after {
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(23,96,197,.10),
+            transparent 70%
+        );
+
+    right: -200px;
+    bottom: -200px;
+}
+
+.login-card {
+    position: relative;
+    z-index: 2;
+
+    width: 430px;
+    max-width: 100%;
+
+    padding: 40px;
+
+    border-radius: 30px;
+
+    background:
+        rgba(255,255,255,.91);
+
+    backdrop-filter: blur(20px);
+
+    border:
+        1px solid rgba(255,255,255,.9);
+
+    box-shadow:
+        0 35px 90px rgba(13,45,91,.18),
+        0 10px 25px rgba(13,45,91,.07);
+}
+
+.logo-box {
+    width: 85px;
+    height: 85px;
+
+    margin: 0 auto 18px;
+
+    border-radius: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+
+    font-size: 27px;
+    font-weight: 900;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1760c5,
+            #06265f
+        );
+
+    box-shadow:
+        0 18px 35px rgba(11,61,145,.28),
+        inset 0 2px 2px rgba(255,255,255,.3);
+
+    transform:
+        perspective(600px)
+        rotateX(3deg);
+}
+
+.login-title {
+    text-align: center;
+}
+
+.login-title h1 {
+    font-size: 28px;
+    letter-spacing: -1px;
+}
+
+.login-title p {
+    margin-top: 7px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* ---------------- ROLE SWITCH ---------------- */
+
+.role-switch {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 6px;
+
+    padding: 5px;
+
+    margin: 28px 0 22px;
+
+    background: #edf2f9;
+
+    border-radius: 14px;
+}
+
+.role-btn {
+    border: 0;
+
+    padding: 11px 5px;
+
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: var(--muted);
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.role-btn.active {
+    color: var(--blue);
+
+    background: white;
+
+    box-shadow:
+        0 4px 12px rgba(13,45,91,.09);
+}
+
+/* ---------------- FORM ---------------- */
+
+.form-group {
+    margin-bottom: 17px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    color: #475569;
+}
+
+.form-input {
+    width: 100%;
+
+    height: 50px;
+
+    padding: 0 15px;
+
+    border-radius: 13px;
+
+    border: 1px solid #dbe3ef;
+
+    outline: none;
+
+    background: rgba(255,255,255,.9);
+
+    transition: .2s;
+}
+
+.form-input:focus {
+    border-color: var(--blue);
+
+    box-shadow:
+        0 0 0 4px rgba(11,61,145,.09);
+}
+
+.primary-btn {
+    width: 100%;
+
+    min-height: 50px;
+
+    border: 0;
+
+    border-radius: 14px;
+
+    color: white;
+
+    font-weight: 800;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1760c5,
+            #0b3d91
+        );
+
+    box-shadow:
+        0 10px 25px rgba(11,61,145,.23),
+        inset 0 1px 0 rgba(255,255,255,.28);
+
+    transition: .2s;
+}
+
+.primary-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 16px 30px rgba(11,61,145,.28);
+}
+
+.secondary-btn {
+    min-height: 46px;
+
+    padding: 0 18px;
+
+    border-radius: 12px;
+
+    border: 1px solid #dbe3ef;
+
+    color: var(--blue);
+
+    background: white;
+
+    font-weight: 750;
+}
+
+.danger-btn {
+    min-height: 46px;
+
+    padding: 0 18px;
+
+    border-radius: 12px;
+
+    border: 0;
+
+    color: white;
+
+    background: var(--red);
+
+    font-weight: 750;
+}
+
+/* ---------------- APP LAYOUT ---------------- */
+
+.app-layout {
+    min-height: 100vh;
+}
+
+.topbar {
+    height: 74px;
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+
+    background:
+        rgba(255,255,255,.88);
+
+    backdrop-filter: blur(18px);
+
+    border-bottom:
+        1px solid rgba(11,61,145,.08);
+
+    box-shadow:
+        0 5px 20px rgba(13,45,91,.05);
+}
+
+.topbar-inner {
+    width: min(1180px, calc(100% - 28px));
+
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-icon {
+    width: 43px;
+    height: 43px;
+
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+
+    font-weight: 900;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1760c5,
+            #06265f
+        );
+
+    box-shadow:
+        0 8px 18px rgba(11,61,145,.2);
+}
+
+.brand-text strong {
+    display: block;
+
+    color: var(--blue);
+
+    font-size: 16px;
+}
+
+.brand-text span {
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+
+    font-weight: 800;
+
+    background:
+        linear-gradient(
+            145deg,
+            #1760c5,
+            #0b3d91
+        );
+
+    box-shadow:
+        0 8px 20px rgba(11,61,145,.18);
+}
+
+/* ---------------- MAIN ---------------- */
+
+.main {
+    width: min(1180px, calc(100% - 28px));
+
+    margin: auto;
+
+    padding: 30px 0 70px;
+}
+
+.page-heading {
+    margin-bottom: 24px;
+}
+
+.page-heading h1 {
+    font-size: clamp(26px, 4vw, 38px);
+
+    letter-spacing: -1.5px;
+}
+
+.page-heading p {
+    margin-top: 6px;
+
+    color: var(--muted);
+}
+
+/* ---------------- GRID ---------------- */
+
+.stats-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 17px;
+
+    margin-bottom: 20px;
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
+.content-grid {
+    display: grid;
 
-body{
-  font-family:Inter,Arial,sans-serif;
-  background:var(--light);
-  color:var(--text);
+    grid-template-columns:
+        1.3fr .7fr;
+
+    gap: 20px;
 }
+
+/* ---------------- CARD ---------------- */
+
+.card {
+    position: relative;
+
+    padding: 24px;
+
+    border-radius: var(--radius);
+
+    background:
+        rgba(255,255,255,.87);
 
-button,input,select{
-  font:inherit;
+    backdrop-filter: blur(14px);
+
+    border:
+        1px solid rgba(255,255,255,.9);
+
+    box-shadow: var(--shadow);
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
 }
 
-button{
-  cursor:pointer;
-  border:0;
+.card:hover {
+    transform: translateY(-4px);
+
+    box-shadow: var(--shadow-hover);
 }
 
-.app{
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
+/* ---------------- STAT ---------------- */
+
+.stat-card {
+    overflow: hidden;
 }
+
+.stat-card::before {
+    content: "";
 
-header{
-  background:white;
-  border-bottom:1px solid var(--border);
-  padding:14px 20px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;
-  top:0;
-  z-index:10;
+    position: absolute;
+
+    width: 130px;
+    height: 130px;
+
+    border-radius: 50%;
+
+    right: -60px;
+    top: -60px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(11,61,145,.13),
+            transparent 70%
+        );
 }
+
+.stat-icon {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 13px;
 
-.logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--blue-light);
+
+    color: var(--blue);
+
+    font-size: 19px;
+
+    margin-bottom: 16px;
 }
+
+.stat-value {
+    font-size: 31px;
+
+    font-weight: 900;
 
-.logo-box{
-  width:42px;
-  height:42px;
-  background:var(--blue);
-  color:white;
-  border-radius:10px;
-  display:grid;
-  place-items:center;
-  font-weight:800;
+    letter-spacing: -1.5px;
+
+    color: var(--blue);
 }
+
+.stat-label {
+    margin-top: 5px;
+
+    color: var(--muted);
 
-.logo h2{
-  color:var(--dark);
-  font-size:18px;
+    font-size: 13px;
+
+    font-weight: 650;
 }
+
+/* ---------------- ZONE ---------------- */
+
+.zone-card {
+    min-height: 285px;
 
-.logo span{
-  display:block;
-  color:var(--muted);
-  font-size:11px;
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #f2f7ff
+        );
 }
+
+.zone-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 230px;
+    height: 230px;
+
+    right: -90px;
+    bottom: -100px;
+
+    border-radius: 50%;
 
-main{
-  width:min(1100px,94%);
-  margin:25px auto;
-  flex:1;
+    border:
+        1px solid rgba(11,61,145,.08);
 }
 
-.page{display:none}
-.page.active{display:block}
+.zone-header {
+    display: flex;
 
-.card{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:20px;
-  box-shadow:0 5px 20px rgba(20,50,90,.05);
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 25px;
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:16px;
+.zone-title h2 {
+    font-size: 20px;
 }
+
+.zone-title p {
+    color: var(--muted);
 
-h1{font-size:28px;margin-bottom:8px}
-h2{font-size:20px;margin-bottom:8px}
-h3{font-size:16px;margin-bottom:6px}
+    margin-top: 5px;
 
-.muted{
-  color:var(--muted);
-  font-size:14px;
+    font-size: 13px;
 }
+
+.zone-status {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
 
-.btn{
-  padding:12px 17px;
-  border-radius:10px;
-  font-weight:700;
-  margin-top:10px;
+    padding: 8px 12px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+
+    font-weight: 800;
 }
 
-.btn-primary{
-  background:var(--blue);
-  color:white;
+.zone-status.inside {
+    color: var(--green);
+
+    background:
+        rgba(19,134,92,.10);
 }
+
+.zone-status.outside {
+    color: var(--red);
 
-.btn-secondary{
-  background:#eaf2ff;
-  color:var(--blue);
+    background:
+        rgba(215,68,68,.10);
 }
+
+.zone-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
 
-.btn-danger{
-  background:#fee2e2;
-  color:var(--red);
+    background: currentColor;
+
+    box-shadow:
+        0 0 0 5px rgba(19,134,92,.09);
 }
+
+.zone-visual {
+    height: 115px;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 10px 0 22px;
+
+    border-radius: 18px;
 
-.btn-success{
-  background:#dcfce7;
-  color:var(--green);
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(23,96,197,.11),
+            transparent 65%
+        ),
+        #edf4ff;
 }
+
+.zone-circle {
+    width: 105px;
+    height: 105px;
+
+    border-radius: 50%;
 
-.btn:disabled{
-  opacity:.45;
-  cursor:not-allowed;
+    border:
+        2px solid rgba(11,61,145,.25);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
 }
+
+.zone-circle::before,
+.zone-circle::after {
+    content: "";
 
-.input,.select{
-  width:100%;
-  padding:12px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  margin-top:7px;
-  outline:none;
+    position: absolute;
+
+    border-radius: 50%;
+
+    border:
+        1px solid rgba(11,61,145,.12);
 }
 
-.input:focus,.select:focus{
-  border-color:var(--blue);
+.zone-circle::before {
+    inset: -18px;
 }
 
-.form-group{
-  margin-bottom:15px;
+.zone-circle::after {
+    inset: -38px;
 }
+
+.zone-pin {
+    width: 37px;
+    height: 37px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
 
-.badge{
-  display:inline-flex;
-  padding:5px 9px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:700;
+    background:
+        linear-gradient(
+            145deg,
+            #1760c5,
+            #0b3d91
+        );
+
+    box-shadow:
+        0 10px 22px rgba(11,61,145,.25);
 }
 
-.badge-green{
-  background:#dcfce7;
-  color:#15803d;
+/* ---------------- SCANNER ---------------- */
+
+.scanner-page {
+    display: none;
 }
+
+.scanner-box {
+    width: min(430px, 100%);
+
+    margin: 30px auto;
+
+    padding: 24px;
+
+    border-radius: 28px;
+
+    background:
+        #ffffff;
 
-.badge-red{
-  background:#fee2e2;
-  color:#b91c1c;
+    box-shadow:
+        0 30px 70px rgba(13,45,91,.15);
 }
 
-.badge-orange{
-  background:#fef3c7;
-  color:#b45309;
+.camera {
+    width: 100%;
+
+    aspect-ratio: 1;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #06182f,
+            #12365f
+        );
+
+    box-shadow:
+        inset 0 0 50px rgba(0,0,0,.3);
 }
 
-.badge-blue{
-  background:#dbeafe;
-  color:#1d4ed8;
+.camera::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 35px;
+
+    border:
+        2px solid rgba(255,255,255,.9);
+
+    border-radius: 18px;
 }
+
+.camera::after {
+    content: "";
+
+    position: absolute;
 
-.top-space{margin-top:22px}
+    left: 10%;
+    right: 10%;
 
-.stat{
-  padding:20px;
+    top: 50%;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #66aaff,
+            transparent
+        );
+
+    box-shadow:
+        0 0 16px #66aaff;
+
+    animation:
+        scan 2s infinite ease-in-out;
 }
+
+@keyframes scan {
+    0% {
+        transform: translateY(-110px);
+    }
+
+    50% {
+        opacity: 1;
+    }
 
-.stat-number{
-  font-size:30px;
-  font-weight:800;
-  color:var(--dark);
+    100% {
+        transform: translateY(110px);
+    }
 }
 
-.stat-label{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:4px;
+.corner {
+    position: absolute;
+
+    width: 30px;
+    height: 30px;
+
+    border-color: white;
+
+    border-style: solid;
+
+    z-index: 2;
 }
+
+.corner.tl {
+    top: 28px;
+    left: 28px;
 
-.nav-actions{
-  display:flex;
-  gap:8px;
-  align-items:center;
+    border-width: 3px 0 0 3px;
 }
 
-.icon-btn{
-  background:#edf4ff;
-  color:var(--blue);
-  padding:9px 12px;
-  border-radius:9px;
+.corner.tr {
+    top: 28px;
+    right: 28px;
+
+    border-width: 3px 3px 0 0;
 }
+
+.corner.bl {
+    bottom: 28px;
+    left: 28px;
 
-.login-wrap{
-  min-height:100vh;
-  display:grid;
-  place-items:center;
-  padding:20px;
-  background:linear-gradient(135deg,#edf5ff,#fff);
+    border-width: 0 0 3px 3px;
 }
 
-.login-card{
-  width:min(430px,100%);
-  background:white;
-  border:1px solid var(--border);
-  border-radius:22px;
-  padding:28px;
-  box-shadow:0 15px 45px rgba(20,60,120,.1);
+.corner.br {
+    bottom: 28px;
+    right: 28px;
+
+    border-width: 0 3px 3px 0;
 }
 
-.login-logo{
-  text-align:center;
-  margin-bottom:25px;
+/* ---------------- QR ---------------- */
+
+.qr-session {
+    display: none;
 }
+
+.qr-card {
+    max-width: 650px;
 
-.login-logo .logo-box{
-  margin:auto;
-  width:60px;
-  height:60px;
-  font-size:20px;
+    margin: 20px auto;
+
+    text-align: center;
 }
+
+.fake-qr {
+    width: 280px;
+    height: 280px;
+
+    margin: 25px auto;
+
+    padding: 18px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 20px 45px rgba(13,45,91,.16);
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(15, 1fr);
 
-.login-logo h1{
-  font-size:22px;
-  margin-top:12px;
+    gap: 2px;
 }
 
-.role-tabs{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:7px;
-  margin-bottom:20px;
+.qr-cell {
+    background: #111;
 }
 
-.role-tab{
-  padding:10px 5px;
-  border-radius:8px;
-  background:#f2f5f9;
-  color:#667085;
-  font-weight:700;
+.qr-cell.white {
+    background: white;
 }
 
-.role-tab.active{
-  background:var(--blue);
-  color:white;
+.live-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 7px 11px;
+
+    border-radius: 999px;
+
+    color: #b52f2f;
+
+    background:
+        rgba(215,68,68,.10);
+
+    font-size: 11px;
+
+    font-weight: 900;
+
+    text-transform: uppercase;
 }
 
-.alert{
-  padding:13px;
-  border-radius:10px;
-  margin-bottom:15px;
-  font-size:14px;
+.live-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #df3d3d;
+
+    animation: pulse 1.5s infinite;
 }
 
-.alert-info{
-  background:#eaf2ff;
-  color:#174ea6;
+@keyframes pulse {
+    50% {
+        transform: scale(.55);
+        opacity: .5;
+    }
 }
+
+/* ---------------- TABLE ---------------- */
 
-.alert-success{
-  background:#dcfce7;
-  color:#166534;
+.table-wrap {
+    overflow-x: auto;
+
+    border-radius: 16px;
 }
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
 
-.alert-error{
-  background:#fee2e2;
-  color:#991b1b;
+    min-width: 600px;
 }
+
+th {
+    text-align: left;
+
+    padding: 14px;
+
+    background: #f3f6fb;
 
-.zone{
-  display:flex;
-  gap:14px;
-  align-items:center;
+    color: var(--muted);
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .7px;
 }
 
-.zone-icon{
-  width:50px;
-  height:50px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  font-size:23px;
+td {
+    padding: 15px 14px;
+
+    border-top:
+        1px solid #edf0f5;
+
+    font-size: 14px;
 }
+
+.status {
+    display: inline-flex;
 
-.zone-inside{
-  background:#dcfce7;
+    padding: 6px 10px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+
+    font-weight: 800;
 }
 
-.zone-outside{
-  background:#fee2e2;
+.status.present {
+    color: var(--green);
+
+    background:
+        rgba(19,134,92,.10);
 }
 
-.qr-box{
-  width:260px;
-  height:260px;
-  margin:20px auto;
-  background:
-    linear-gradient(90deg,#111 10px,transparent 10px) 0 0/30px 30px,
-    linear-gradient(#111 10px,transparent 10px) 0 0/30px 30px,
-    white;
-  border:15px solid white;
-  outline:1px solid #bbb;
-  position:relative;
-  overflow:hidden;
+.status.absent {
+    color: var(--red);
+
+    background:
+        rgba(215,68,68,.10);
 }
+
+.status.manual {
+    color: var(--orange);
 
-.qr-box:after{
-  content:"NDC";
-  position:absolute;
-  background:white;
-  border:4px solid #111;
-  font-weight:900;
-  padding:8px;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
+    background:
+        rgba(210,139,24,.12);
 }
 
-.timer{
-  text-align:center;
-  font-size:26px;
-  font-weight:800;
-  color:var(--blue);
+/* ---------------- ADMIN ---------------- */
+
+.admin-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
 }
+
+.admin-action {
+    padding: 23px;
+
+    border-radius: 19px;
+
+    background: white;
+
+    box-shadow: var(--shadow);
 
-.scanner{
-  height:300px;
-  border-radius:18px;
-  background:#101828;
-  display:grid;
-  place-items:center;
-  color:white;
-  position:relative;
-  overflow:hidden;
+    border: 1px solid #edf1f7;
+
+    transition: .2s;
 }
 
-.scan-line{
-  position:absolute;
-  width:80%;
-  height:2px;
-  background:#22c55e;
-  animation:scan 2s infinite;
+.admin-action:hover {
+    transform: translateY(-3px);
+
+    box-shadow: var(--shadow-hover);
 }
+
+.admin-icon {
+    width: 46px;
+    height: 46px;
+
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--blue-light);
 
-@keyframes scan{
-  0%{top:25%}
-  50%{top:75%}
-  100%{top:25%}
+    color: var(--blue);
+
+    margin-bottom: 15px;
+
+    font-size: 20px;
 }
 
-.scan-corners{
-  width:220px;
-  height:220px;
-  border:3px solid #22c55e;
-  border-radius:15px;
+.admin-action h3 {
+    font-size: 16px;
 }
+
+.admin-action p {
+    margin-top: 5px;
 
-.table-wrap{
-  overflow-x:auto;
+    color: var(--muted);
+
+    font-size: 13px;
 }
+
+/* ---------------- MODAL ---------------- */
+
+.modal {
+    position: fixed;
 
-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:10px;
+    inset: 0;
+
+    z-index: 999;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(4,18,38,.48);
+
+    backdrop-filter: blur(8px);
 }
 
-th,td{
-  padding:13px 10px;
-  text-align:left;
-  border-bottom:1px solid var(--border);
-  font-size:14px;
+.modal.active {
+    display: flex;
 }
 
-th{
-  color:var(--muted);
-  font-size:12px;
+.modal-card {
+    width: min(500px, 100%);
+
+    padding: 28px;
+
+    border-radius: 24px;
+
+    background: white;
+
+    box-shadow:
+        0 35px 80px rgba(0,0,0,.22);
+
+    animation:
+        modalIn .25s ease;
 }
 
-.empty{
-  text-align:center;
-  padding:35px;
-  color:var(--muted);
+@keyframes modalIn {
+    from {
+        transform: translateY(15px) scale(.97);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
 }
+
+/* ---------------- TOAST ---------------- */
 
-.toast{
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  background:#172033;
-  color:white;
-  padding:13px 18px;
-  border-radius:10px;
-  opacity:0;
-  transform:translateY(20px);
-  transition:.25s;
-  z-index:100;
+.toast {
+    position: fixed;
+
+    right: 20px;
+    bottom: 20px;
+
+    z-index: 2000;
+
+    max-width: 350px;
+
+    padding: 15px 18px;
+
+    border-radius: 14px;
+
+    color: white;
+
+    background:
+        #162033;
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.2);
+
+    transform:
+        translateY(30px);
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition: .25s;
 }
 
-.toast.show{
-  opacity:1;
-  transform:translateY(0);
+.toast.show {
+    transform:
+        translateY(0);
+
+    opacity: 1;
 }
+
+/* ---------------- MOBILE ---------------- */
+
+@media(max-width: 900px) {
 
-footer{
-  text-align:center;
-  padding:20px;
-  color:var(--muted);
-  font-size:12px;
+    .stats-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
 }
+
+@media(max-width: 600px) {
+
+    .login-card {
+        padding: 28px 20px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .main {
+        padding-top: 22px;
+    }
+
+    .card {
+        padding: 20px;
+        border-radius: 19px;
+    }
+
+    .brand-text span {
+        display: none;
+    }
+
+    .topbar {
+        height: 65px;
+    }
 
-@media(max-width:600px){
-  main{width:92%;margin:18px auto}
-  h1{font-size:24px}
-  .qr-box{width:220px;height:220px}
-  .nav-actions .btn{padding:9px}
+    .topbar-inner {
+        width: calc(100% - 18px);
+    }
 }
 </style>
 </head>
 
 <body>
 
+<div id="app"></div>
+
 <div id="toast" class="toast"></div>
 
-<!-- LOGIN -->
-<section id="loginPage" class="login-wrap">
-  <div class="login-card">
-
-    <div class="login-logo">
-      <div class="logo-box">NDC</div>
-      <h1>NDC Attendance System</h1>
-      <p class="muted">Smart Campus Attendance</p>
-    </div>
-
-    <div class="role-tabs">
-      <button class="role-tab active" onclick="setRole('student',this)">Student</button>
-      <button class="role-tab" onclick="setRole('teacher',this)">Teacher</button>
-      <button class="role-tab" onclick="setRole('admin',this)">Admin</button>
-    </div>
-
-    <div id="loginMessage"></div>
-
-    <div class="form-group">
-      <label>Email</label>
-      <input id="loginEmail" class="input" type="email" placeholder="Enter email">
-    </div>
-
-    <div class="form-group">
-      <label>Password</label>
-      <input id="loginPassword" class="input" type="password" placeholder="Enter password">
-    </div>
-
-    <button class="btn btn-primary" style="width:100%" onclick="login()">
-      Login
-    </button>
-
-    <button class="btn btn-secondary" style="width:100%" onclick="showRegister()">
-      Create Student Account
-    </button>
-
-    <p class="muted" style="text-align:center;margin-top:15px">
-      Frontend prototype — Firebase will be connected later.
-    </p>
-  </div>
-</section>
-
-<!-- REGISTER -->
-<section id="registerPage" class="login-wrap" style="display:none">
-  <div class="login-card">
-
-    <div class="login-logo">
-      <div class="logo-box">NDC</div>
-      <h1>Student Registration</h1>
-      <p class="muted">Create your NDC account</p>
-    </div>
-
-    <div class="form-group">
-      <label>Full Name</label>
-      <input id="regName" class="input" placeholder="Student name">
-    </div>
-
-    <div class="form-group">
-      <label>Roll Number</label>
-      <input id="regRoll" class="input" placeholder="NDC2026001">
-    </div>
-
-    <div class="form-group">
-      <label>Class</label>
-      <select id="regClass" class="select">
-        <option>BCA 5th Semester</option>
-        <option>BCA 3rd Semester</option>
-        <option>B.Com 5th Semester</option>
-        <option>BBA 5th Semester</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Email</label>
-      <input id="regEmail" class="input" type="email" placeholder="student@example.com">
-    </div>
-
-    <div class="form-group">
-      <label>Password</label>
-      <input id="regPassword" class="input" type="password" placeholder="Create password">
-    </div>
-
-    <button class="btn btn-primary" style="width:100%" onclick="registerStudent()">
-      Create Account
-    </button>
-
-    <button class="btn btn-secondary" style="width:100%" onclick="showLogin()">
-      Back to Login
-    </button>
-
-  </div>
-</section>
-
-<!-- APP -->
-<div id="app" class="app" style="display:none">
-
-<header>
-  <div class="logo">
-    <div class="logo-box">NDC</div>
-    <div>
-      <h2>NDC Attendance</h2>
-      <span id="headerRole">Student Portal</span>
-    </div>
-  </div>
-
-  <div class="nav-actions">
-    <button class="icon-btn" onclick="goHome()">Home</button>
-    <button class="btn btn-danger" style="margin:0" onclick="logout()">Logout</button>
-  </div>
-</header>
-
-<main>
-
-<!-- STUDENT DASHBOARD -->
-<section id="studentHome" class="page">
-
-  <h1>Good morning, <span id="studentName">Student</span> 👋</h1>
-  <p class="muted">Welcome to your NDC attendance dashboard.</p>
-
-  <div class="grid top-space">
-
-    <div class="card stat">
-      <div class="stat-number">86%</div>
-      <div class="stat-label">Overall Attendance</div>
-    </div>
-
-    <div class="card stat">
-      <div class="stat-number">42</div>
-      <div class="stat-label">Present</div>
-    </div>
-
-    <div class="card stat">
-      <div class="stat-number">7</div>
-      <div class="stat-label">Absent</div>
-    </div>
-
-  </div>
-
-  <div class="card top-space">
-    <h2>Attendance Zone</h2>
-    <div id="studentZone"></div>
-
-    <button id="scanButton" class="btn btn-primary"
-            style="width:100%" onclick="openScanner()">
-      📷 Scan Attendance QR
-    </button>
-  </div>
-
-  <div class="grid top-space">
-
-    <div class="card">
-      <h3>📊 Attendance History</h3>
-      <p class="muted">View your attendance records.</p>
-      <button class="btn btn-secondary" onclick="showPage('studentHistory')">
-        View History
-      </button>
-    </div>
-
-    <div class="card">
-      <h3>👤 Profile</h3>
-      <p class="muted">View your registered information.</p>
-      <button class="btn btn-secondary" onclick="showPage('studentProfile')">
-        View Profile
-      </button>
-    </div>
-
-  </div>
-</section>
-
-<!-- STUDENT SCANNER -->
-<section id="studentScanner" class="page">
-
-  <h1>Scan Attendance</h1>
-  <p class="muted">Scan the QR displayed by your teacher.</p>
-
-  <div class="card top-space">
-
-    <div id="scannerZoneMessage"></div>
-
-    <div class="scanner">
-      <div class="scan-corners"></div>
-      <div class="scan-line"></div>
-      <div style="position:absolute;bottom:18px">
-        Camera Scanner Prototype
-      </div>
-    </div>
-
-    <button class="btn btn-primary" style="width:100%" onclick="simulateScan()">
-      Simulate QR Scan
-    </button>
-
-    <button class="btn btn-secondary" style="width:100%" onclick="goHome()">
-      Cancel
-    </button>
-
-  </div>
-</section>
-
-<!-- STUDENT HISTORY -->
-<section id="studentHistory" class="page">
-
-  <h1>Attendance History</h1>
-  <p class="muted">Your recent attendance records.</p>
-
-  <div class="card top-space table-wrap">
-
-    <table>
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Subject</th>
-          <th>Time</th>
-          <th>Method</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-
-      <tbody id="studentHistoryTable"></tbody>
-    </table>
-
-  </div>
-</section>
-
-<!-- STUDENT PROFILE -->
-<section id="studentProfile" class="page">
-
-  <h1>My Profile</h1>
-
-  <div class="card top-space">
-
-    <div class="form-group">
-      <label>Name</label>
-      <input id="profileName" class="input" disabled>
-    </div>
-
-    <div class="form-group">
-      <label>Roll Number</label>
-      <input id="profileRoll" class="input" disabled>
-    </div>
-
-    <div class="form-group">
-      <label>Class</label>
-      <input id="profileClass" class="input" disabled>
-    </div>
-
-    <div class="form-group">
-      <label>Email</label>
-      <input id="profileEmail" class="input" disabled>
-    </div>
-
-  </div>
-</section>
-
-<!-- TEACHER HOME -->
-<section id="teacherHome" class="page">
-
-  <h1>Teacher Dashboard</h1>
-  <p class="muted">Manage live classroom attendance.</p>
-
-  <div class="grid top-space">
-
-    <div class="card stat">
-      <div class="stat-number">5</div>
-      <div class="stat-label">Classes Today</div>
-    </div>
-
-    <div class="card stat">
-      <div class="stat-number">142</div>
-      <div class="stat-label">Students</div>
-    </div>
-
-    <div class="card stat">
-      <div class="stat-number">92%</div>
-      <div class="stat-label">Today's Attendance</div>
-    </div>
-
-  </div>
-
-  <div class="card top-space">
-
-    <h2>Start Live Attendance</h2>
-    <p class="muted">Generate a temporary QR for your classroom.</p>
-
-    <div class="grid top-space">
-
-      <div>
-        <label>Class</label>
-        <select id="teacherClass" class="select">
-          <option>BCA 5th Semester</option>
-          <option>BCA 3rd Semester</option>
-          <option>B.Com 5th Semester</option>
-        </select>
-      </div>
-
-      <div>
-        <label>Subject</label>
-        <select id="teacherSubject" class="select">
-          <option>Web Programming</option>
-          <option>Database Management</option>
-          <option>Computer Networks</option>
-          <option>Artificial Intelligence</option>
-        </select>
-      </div>
-
-    </div>
-
-    <button class="btn btn-primary" onclick="startAttendance()">
-      ▶ Start Attendance
-    </button>
-
-  </div>
-</section>
-
-<!-- TEACHER QR -->
-<section id="teacherQR" class="page">
-
-  <h1>Live Attendance</h1>
-  <p class="muted" id="liveClassInfo"></p>
-
-  <div class="card top-space" style="text-align:center">
-
-    <span class="badge badge-green">● LIVE</span>
-
-    <div class="qr-box"></div>
-
-    <div class="timer" id="qrTimer">05:00</div>
-
-    <p class="muted top-space">
-      Students inside the NDC Attendance Zone can scan this QR.
-    </p>
-
-    <button class="btn btn-danger" onclick="endAttendance()">
-      End Attendance
-    </button>
-
-  </div>
-
-  <div class="card top-space">
-
-    <h2>Live Student Attendance</h2>
-
-    <div class="table-wrap">
-
-      <table>
-        <thead>
-          <tr>
-            <th>Student</th>
-            <th>Roll Number</th>
-            <th>Time</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-
-        <tbody id="liveAttendanceTable">
-          <tr>
-            <td>Rahul Kumar</td>
-            <td>NDC2026001</td>
-            <td>10:02 AM</td>
-            <td><span class="badge badge-green">Present</span></td>
-          </tr>
-        </tbody>
-
-      </table>
-
-    </div>
-  </div>
-
-</section>
-
-<!-- ADMIN HOME -->
-<section id="adminHome" class="page">
-
-  <h1>Admin Dashboard</h1>
-  <p class="muted">Manage NDC attendance system.</p>
-
-  <div class="grid top-space">
-
-    <div class="card stat">
-      <div class="stat-number">1,248</div>
-      <div class="stat-label">Students</div>
-    </div>
-
-    <div class="card stat">
-      <div class="stat-number">48</div>
-      <div class="stat-label">Teachers</div>
-    </div>
-
-    <div class="card stat">
-      <div class="stat-number">31</div>
-      <div class="stat-label">Classes</div>
-    </div>
-
-  </div>
-
-  <div class="grid top-space">
-
-    <div class="card">
-      <h3>📋 Attendance Management</h3>
-      <p class="muted">View today's attendance.</p>
-      <button class="btn btn-secondary" onclick="showPage('adminAttendance')">
-        Open Attendance
-      </button>
-    </div>
-
-    <div class="card">
-      <h3>📝 Manual Override</h3>
-      <p class="muted">Record attendance for genuine exceptions.</p>
-      <button class="btn btn-primary" onclick="showPage('adminOverride')">
-        Manual Attendance
-      </button>
-    </div>
-
-  </div>
-</section>
-
-<!-- ADMIN ATTENDANCE -->
-<section id="adminAttendance" class="page">
-
-  <h1>Attendance Management</h1>
-  <p class="muted">Today's attendance overview.</p>
-
-  <div class="card top-space table-wrap">
-
-    <table>
-      <thead>
-        <tr>
-          <th>Student</th>
-          <th>Roll</th>
-          <th>Class</th>
-          <th>Subject</th>
-          <th>Method</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr>
-          <td>Rahul Kumar</td>
-          <td>NDC2026001</td>
-          <td>BCA 5th</td>
-          <td>Web Programming</td>
-          <td><span class="badge badge-blue">QR</span></td>
-          <td><span class="badge badge-green">Present</span></td>
-        </tr>
-
-        <tr>
-          <td>Ananya R</td>
-          <td>NDC2026002</td>
-          <td>BCA 5th</td>
-          <td>Web Programming</td>
-          <td><span class="badge badge-orange">Admin</span></td>
-          <td><span class="badge badge-green">Present</span></td>
-        </tr>
-      </tbody>
-
-    </table>
-
-  </div>
-
-</section>
-
-<!-- ADMIN OVERRIDE -->
-<section id="adminOverride" class="page">
-
-  <h1>Manual Attendance</h1>
-  <p class="muted">
-    Use only for genuine approved exceptions.
-  </p>
-
-  <div class="card top-space">
-
-    <div class="alert alert-info">
-      Every manual attendance action will be stored in the audit log.
-    </div>
-
-    <div class="form-group">
-      <label>Student</label>
-      <select id="overrideStudent" class="select">
-        <option>Rahul Kumar — NDC2026001</option>
-        <option>Ananya R — NDC2026002</option>
-        <option>Arjun S — NDC2026003</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Subject</label>
-      <select class="select">
-        <option>Web Programming</option>
-        <option>Database Management</option>
-        <option>Computer Networks</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Reason</label>
-      <select id="overrideReason" class="select">
-        <option>Medical Reason</option>
-        <option>Official College Work</option>
-        <option>Technical Issue</option>
-        <option>Other Approved Reason</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Admin Remarks</label>
-      <textarea id="overrideRemarks" class="input"
-                rows="4"
-                placeholder="Enter details..."></textarea>
-    </div>
-
-    <button class="btn btn-primary" onclick="manualAttendance()">
-      ✓ Mark Present
-    </button>
-
-  </div>
-</section>
-
-</main>
-
-<footer>
-  Nagarjuna Degree College • NDC Smart Attendance System
-</footer>
-
-</div>
+<!-- ======================================================
+     JAVASCRIPT
+     ====================================================== -->
 
 <script>
+
+/* =========================================================
+   APP STATE
+   ========================================================= */
+
+const app = document.getElementById("app");
+
 let currentRole = "student";
-let currentPage = "";
-let attendanceTimer = null;
-let remainingSeconds = 300;
 
-const student = {
-  name:"Rahul Kumar",
-  roll:"NDC2026001",
-  class:"BCA 5th Semester",
-  email:"rahul@example.com"
-};
+let locationInside = true;
 
-const attendanceHistory = [
-  {
-    date:"22 Sep 2026",
-    subject:"Web Programming",
-    time:"10:02 AM",
-    method:"QR",
-    status:"Present"
-  },
-  {
-    date:"21 Sep 2026",
-    subject:"Database Management",
-    time:"09:05 AM",
-    method:"QR",
-    status:"Present"
-  },
-  {
-    date:"20 Sep 2026",
-    subject:"Computer Networks",
-    time:"11:03 AM",
-    method:"Admin Override",
-    status:"Present"
-  }
-];
+let attendanceStarted = false;
 
-function setRole(role, element){
-  currentRole = role;
+let attendanceSeconds = 300;
 
-  document.querySelectorAll(".role-tab")
-    .forEach(btn => btn.classList.remove("active"));
+let countdownInterval;
 
-  element.classList.add("active");
-}
 
-function showRegister(){
-  document.getElementById("loginPage").style.display="none";
-  document.getElementById("registerPage").style.display="grid";
-}
+/* =========================================================
+   LOGIN
+   ========================================================= */
 
-function showLogin(){
-  document.getElementById("registerPage").style.display="none";
-  document.getElementById("loginPage").style.display="grid";
-}
+function renderLogin() {
 
-function login(){
+    app.innerHTML = `
 
-  const email=document.getElementById("loginEmail").value.trim();
+    <div class="login-screen">
 
-  if(!email){
-    document.getElementById("loginMessage").innerHTML =
-      `<div class="alert alert-error">Please enter your email.</div>`;
-    return;
-  }
+        <div class="login-card">
 
-  document.getElementById("loginPage").style.display="none";
-  document.getElementById("app").style.display="flex";
+            <div class="logo-box">
+                NDC
+            </div>
 
-  if(currentRole==="student"){
-    setupStudent();
-    showPage("studentHome");
-  }
+            <div class="login-title">
+                <h1>NDC Attendance</h1>
+                <p>Digital Attendance Management System</p>
+            </div>
 
-  if(currentRole==="teacher"){
-    document.getElementById("headerRole").textContent="Teacher Portal";
-    showPage("teacherHome");
-  }
+            <div class="role-switch">
 
-  if(currentRole==="admin"){
-    document.getElementById("headerRole").textContent="Administrator";
-    showPage("adminHome");
-  }
-}
+                <button
+                    class="role-btn active"
+                    onclick="setRole('student', this)">
+                    Student
+                </button>
 
-function registerStudent(){
+                <button
+                    class="role-btn"
+                    onclick="setRole('teacher', this)">
+                    Teacher
+                </button>
 
-  const name=document.getElementById("regName").value.trim();
-  const roll=document.getElementById("regRoll").value.trim();
-  const email=document.getElementById("regEmail").value.trim();
+                <button
+                    class="role-btn"
+                    onclick="setRole('admin', this)">
+                    Admin
+                </button>
 
-  if(!name || !roll || !email){
-    alert("Please complete all required fields.");
-    return;
-  }
+            </div>
 
-  student.name=name;
-  student.roll=roll;
-  student.class=document.getElementById("regClass").value;
-  student.email=email;
+            <div class="form-group">
 
-  toast("Student account created successfully.");
+                <label>Email / ID</label>
 
-  showLogin();
+                <input
+                    class="form-input"
+                    id="loginEmail"
+                    placeholder="Enter your email or ID">
 
-  document.getElementById("loginEmail").value=email;
-}
+            </div>
 
-function setupStudent(){
+            <div class="form-group">
 
-  document.getElementById("headerRole").textContent="Student Portal";
+                <label>Password</label>
 
-  document.getElementById("studentName").textContent=
-    student.name.split(" ")[0];
+                <input
+                    class="form-input"
+                    type="password"
+                    placeholder="Enter password">
 
-  document.getElementById("profileName").value=student.name;
-  document.getElementById("profileRoll").value=student.roll;
-  document.getElementById("profileClass").value=student.class;
-  document.getElementById("profileEmail").value=student.email;
+            </div>
 
-  renderHistory();
+            <button
+                class="primary-btn"
+                onclick="login()">
 
-  updateZone(true);
-}
+                Sign In
 
-function updateZone(inside){
+            </button>
 
-  const zone=document.getElementById("studentZone");
-  const button=document.getElementById("scanButton");
+            <p style="
+                text-align:center;
+                margin-top:18px;
+                color:#718096;
+                font-size:12px;
+            ">
+                NDC • Secure Digital Campus
+            </p>
 
-  if(inside){
-
-    zone.innerHTML=`
-      <div class="alert alert-success zone">
-        <div class="zone-icon zone-inside">📍</div>
-        <div>
-          <strong>You are inside the NDC Attendance Zone</strong>
-          <div class="muted">Attendance scanning is available.</div>
         </div>
-      </div>`;
 
-    button.disabled=false;
+    </div>
 
-  }else{
+    `;
 
-    zone.innerHTML=`
-      <div class="alert alert-error zone">
-        <div class="zone-icon zone-outside">📍</div>
-        <div>
-          <strong>You are outside the NDC Attendance Zone</strong>
-          <div class="muted">Enter the college premises to mark attendance.</div>
+}
+
+
+/* =========================================================
+   ROLE
+   ========================================================= */
+
+function setRole(role, button) {
+
+    currentRole = role;
+
+    document
+        .querySelectorAll(".role-btn")
+        .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+}
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+function login() {
+
+    showToast("Login successful");
+
+    setTimeout(() => {
+
+        if(currentRole === "student") {
+            renderStudent();
+        }
+
+        if(currentRole === "teacher") {
+            renderTeacher();
+        }
+
+        if(currentRole === "admin") {
+            renderAdmin();
+        }
+
+    }, 350);
+
+}
+
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+function topbar(name, role) {
+
+    return `
+
+    <div class="topbar">
+
+        <div class="topbar-inner">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    N
+                </div>
+
+                <div class="brand-text">
+
+                    <strong>NDC Attendance</strong>
+
+                    <span>
+                        Nagarjuna Degree College
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="user-menu">
+
+                <div style="
+                    text-align:right;
+                    display:none;
+                " class="desktop-user">
+
+                    <strong style="
+                        font-size:13px;
+                    ">
+                        ${name}
+                    </strong>
+
+                    <div style="
+                        font-size:11px;
+                        color:#718096;
+                    ">
+                        ${role}
+                    </div>
+
+                </div>
+
+                <div class="avatar">
+                    ${name.charAt(0)}
+                </div>
+
+                <button
+                    class="secondary-btn"
+                    onclick="renderLogin()"
+                    style="
+                        min-height:40px;
+                        padding:0 12px;
+                    ">
+
+                    Logout
+
+                </button>
+
+            </div>
+
         </div>
-      </div>`;
 
-    button.disabled=true;
-  }
+    </div>
+
+    `;
+
 }
 
-function openScanner(){
 
-  showPage("studentScanner");
+/* =========================================================
+   STUDENT DASHBOARD
+   ========================================================= */
 
-  document.getElementById("scannerZoneMessage").innerHTML=`
-    <div class="alert alert-success">
-      🟢 Location verified — You are inside the attendance zone.
-    </div>`;
+function renderStudent() {
+
+    app.innerHTML = `
+
+    <div class="app-layout">
+
+        ${topbar("Student", "Student")}
+
+        <main class="main">
+
+            <div class="page-heading">
+
+                <h1>Good morning, Student 👋</h1>
+
+                <p>
+                    BCA • 5th Semester • NDC
+                </p>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+                <div class="card stat-card">
+
+                    <div class="stat-icon">
+                        ✓
+                    </div>
+
+                    <div class="stat-value">
+                        86%
+                    </div>
+
+                    <div class="stat-label">
+                        Overall Attendance
+                    </div>
+
+                </div>
+
+
+                <div class="card stat-card">
+
+                    <div class="stat-icon">
+                        ✓
+                    </div>
+
+                    <div class="stat-value">
+                        42
+                    </div>
+
+                    <div class="stat-label">
+                        Present Days
+                    </div>
+
+                </div>
+
+
+                <div class="card stat-card">
+
+                    <div class="stat-icon">
+                        !
+                    </div>
+
+                    <div class="stat-value">
+                        7
+                    </div>
+
+                    <div class="stat-label">
+                        Absent Days
+                    </div>
+
+                </div>
+
+
+                <div class="card stat-card">
+
+                    <div class="stat-icon">
+                        %
+                    </div>
+
+                    <div class="stat-value">
+                        49
+                    </div>
+
+                    <div class="stat-label">
+                        Total Classes
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="content-grid">
+
+                <!-- ATTENDANCE ZONE -->
+
+                <div class="card zone-card">
+
+                    <div class="zone-header">
+
+                        <div class="zone-title">
+
+                            <h2>Attendance Zone</h2>
+
+                            <p>
+                                Your location must be inside
+                                the NDC campus zone.
+                            </p>
+
+                        </div>
+
+                        <div
+                            id="zoneStatus"
+                            class="zone-status inside">
+
+                            <span class="zone-dot"></span>
+
+                            Inside Zone
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="zone-visual">
+
+                        <div class="zone-circle">
+
+                            <div class="zone-pin">
+                                📍
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div style="
+                        display:flex;
+                        align-items:center;
+                        justify-content:space-between;
+                        gap:15px;
+                    ">
+
+                        <div>
+
+                            <strong id="zoneMessage">
+                                You are inside NDC campus
+                            </strong>
+
+                            <p style="
+                                margin-top:5px;
+                                color:#718096;
+                                font-size:12px;
+                            ">
+                                Attendance scanning is available.
+                            </p>
+
+                        </div>
+
+                        <button
+                            class="primary-btn"
+                            style="
+                                width:auto;
+                                padding:0 18px;
+                            "
+                            onclick="openScanner()"
+                            id="scanBtn">
+
+                            📷 Scan
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TODAY -->
+
+                <div class="card">
+
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                        margin-bottom:20px;
+                    ">
+
+                        <div>
+
+                            <h2 style="
+                                font-size:19px;
+                            ">
+                                Today's Classes
+                            </h2>
+
+                            <p style="
+                                margin-top:5px;
+                                color:#718096;
+                                font-size:12px;
+                            ">
+                                Wednesday, 23 September
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div style="
+                        padding:15px;
+                        border-radius:15px;
+                        background:#f5f8fd;
+                        margin-bottom:10px;
+                    ">
+
+                        <strong>
+                            10:00 AM
+                        </strong>
+
+                        <p style="
+                            color:#718096;
+                            font-size:13px;
+                            margin-top:4px;
+                        ">
+                            Web Programming
+                        </p>
+
+                    </div>
+
+
+                    <div style="
+                        padding:15px;
+                        border-radius:15px;
+                        background:#f5f8fd;
+                        margin-bottom:10px;
+                    ">
+
+                        <strong>
+                            12:00 PM
+                        </strong>
+
+                        <p style="
+                            color:#718096;
+                            font-size:13px;
+                            margin-top:4px;
+                        ">
+                            Database Management
+                        </p>
+
+                    </div>
+
+
+                    <div style="
+                        padding:15px;
+                        border-radius:15px;
+                        background:#f5f8fd;
+                    ">
+
+                        <strong>
+                            2:00 PM
+                        </strong>
+
+                        <p style="
+                            color:#718096;
+                            font-size:13px;
+                            margin-top:4px;
+                        ">
+                            Computer Networks
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HISTORY -->
+
+            <div class="card" style="
+                margin-top:20px;
+            ">
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    margin-bottom:18px;
+                ">
+
+                    <div>
+
+                        <h2 style="
+                            font-size:19px;
+                        ">
+                            Recent Attendance
+                        </h2>
+
+                        <p style="
+                            color:#718096;
+                            font-size:12px;
+                            margin-top:5px;
+                        ">
+                            Your latest attendance records
+                        </p>
+
+                    </div>
+
+                    <button
+                        class="secondary-btn"
+                        onclick="showHistory()">
+
+                        View All
+
+                    </button>
+
+                </div>
+
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Date</th>
+                                <th>Subject</th>
+                                <th>Time</th>
+                                <th>Method</th>
+                                <th>Status</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>23 Sep</td>
+                                <td>Web Programming</td>
+                                <td>10:03 AM</td>
+                                <td>QR</td>
+                                <td>
+                                    <span class="status present">
+                                        Present
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>22 Sep</td>
+                                <td>DBMS</td>
+                                <td>12:02 PM</td>
+                                <td>QR</td>
+                                <td>
+                                    <span class="status present">
+                                        Present
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>21 Sep</td>
+                                <td>Networks</td>
+                                <td>2:00 PM</td>
+                                <td>Manual</td>
+                                <td>
+                                    <span class="status manual">
+                                        Present
+                                    </span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    `;
+
 }
 
-function simulateScan(){
 
-  document.getElementById("scannerZoneMessage").innerHTML=`
-    <div class="alert alert-info">
-      🔍 Checking QR token, session and attendance status...
-    </div>`;
+/* =========================================================
+   SIMULATE LOCATION
+   ========================================================= */
 
-  setTimeout(()=>{
+function toggleLocation() {
 
-    attendanceHistory.unshift({
-      date:"23 Sep 2026",
-      subject:"Web Programming",
-      time:"11:14 AM",
-      method:"QR",
-      status:"Present"
-    });
+    locationInside = !locationInside;
 
-    renderHistory();
+    const status =
+        document.getElementById("zoneStatus");
 
-    document.getElementById("scannerZoneMessage").innerHTML=`
-      <div class="alert alert-success">
-        <strong>✓ Attendance Marked Successfully</strong><br>
-        Web Programming • 11:14 AM
-      </div>`;
+    const message =
+        document.getElementById("zoneMessage");
 
-    toast("Attendance marked successfully.");
+    const button =
+        document.getElementById("scanBtn");
 
-  },1200);
-}
+    if(locationInside) {
 
-function renderHistory(){
+        status.className =
+            "zone-status inside";
 
-  const table=document.getElementById("studentHistoryTable");
+        status.innerHTML =
+            '<span class="zone-dot"></span> Inside Zone';
 
-  table.innerHTML=attendanceHistory.map(item=>`
-    <tr>
-      <td>${item.date}</td>
-      <td>${item.subject}</td>
-      <td>${item.time}</td>
-      <td>
-        <span class="badge ${item.method==="QR"?"badge-blue":"badge-orange"}">
-          ${item.method}
-        </span>
-      </td>
-      <td>
-        <span class="badge badge-green">${item.status}</span>
-      </td>
-    </tr>
-  `).join("");
-}
+        message.textContent =
+            "You are inside NDC campus";
 
-function startAttendance(){
+        button.disabled = false;
 
-  const cls=document.getElementById("teacherClass").value;
-  const subject=document.getElementById("teacherSubject").value;
+        button.style.opacity = "1";
 
-  document.getElementById("liveClassInfo").textContent=
-    `${cls} • ${subject}`;
+    } else {
 
-  remainingSeconds=300;
+        status.className =
+            "zone-status outside";
 
-  showPage("teacherQR");
+        status.innerHTML =
+            '<span class="zone-dot"></span> Outside Zone';
 
-  clearInterval(attendanceTimer);
+        message.textContent =
+            "You are outside the attendance zone";
 
-  attendanceTimer=setInterval(()=>{
+        button.disabled = true;
 
-    remainingSeconds--;
+        button.style.opacity = ".45";
 
-    updateTimer();
-
-    if(remainingSeconds<=0){
-      endAttendance();
     }
 
-  },1000);
-
-  updateTimer();
 }
 
-function updateTimer(){
 
-  const min=Math.floor(remainingSeconds/60);
-  const sec=remainingSeconds%60;
+/* =========================================================
+   SCANNER
+   ========================================================= */
 
-  document.getElementById("qrTimer").textContent=
-    `${String(min).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;
+function openScanner() {
+
+    if(!locationInside) {
+
+        showToast(
+            "You are outside the NDC Attendance Zone."
+        );
+
+        return;
+    }
+
+    app.innerHTML = `
+
+    <div class="app-layout">
+
+        ${topbar("Student", "Student")}
+
+        <main class="main">
+
+            <button
+                class="secondary-btn"
+                onclick="renderStudent()">
+
+                ← Back
+
+            </button>
+
+            <div style="
+                text-align:center;
+                margin-top:25px;
+            ">
+
+                <h1>
+                    Scan Attendance
+                </h1>
+
+                <p style="
+                    color:#718096;
+                    margin-top:6px;
+                ">
+                    Scan the QR displayed by your teacher.
+                </p>
+
+            </div>
+
+
+            <div class="scanner-box">
+
+                <div class="camera">
+
+                    <div class="corner tl"></div>
+                    <div class="corner tr"></div>
+                    <div class="corner bl"></div>
+                    <div class="corner br"></div>
+
+                </div>
+
+
+                <div style="
+                    text-align:center;
+                    margin-top:22px;
+                ">
+
+                    <strong>
+                        Position the QR inside the frame
+                    </strong>
+
+                    <p style="
+                        color:#718096;
+                        font-size:12px;
+                        margin-top:6px;
+                    ">
+                        Your location is being verified.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    style="
+                        margin-top:20px;
+                    "
+                    onclick="simulateScan()">
+
+                    Simulate QR Scan
+
+                </button>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    `;
+
 }
 
-function endAttendance(){
 
-  clearInterval(attendanceTimer);
+/* =========================================================
+   SCAN RESULT
+   ========================================================= */
 
-  toast("Attendance session ended.");
+function simulateScan() {
 
-  showPage("teacherHome");
+    showToast("QR verified. Checking attendance...");
+
+    setTimeout(() => {
+
+        app.innerHTML = `
+
+        <div class="app-layout">
+
+            ${topbar("Student", "Student")}
+
+            <main class="main">
+
+                <div style="
+                    max-width:520px;
+                    margin:70px auto;
+                    text-align:center;
+                ">
+
+                    <div style="
+                        width:100px;
+                        height:100px;
+                        margin:auto;
+
+                        border-radius:50%;
+
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+
+                        font-size:45px;
+
+                        color:white;
+
+                        background:
+                            linear-gradient(
+                                145deg,
+                                #1ba56f,
+                                #087149
+                            );
+
+                        box-shadow:
+                            0 20px 40px
+                            rgba(19,134,92,.25);
+                    ">
+                        ✓
+                    </div>
+
+                    <h1 style="
+                        margin-top:25px;
+                    ">
+                        Attendance Marked
+                    </h1>
+
+                    <p style="
+                        margin-top:8px;
+                        color:#718096;
+                    ">
+                        Your attendance has been
+                        successfully recorded.
+                    </p>
+
+
+                    <div class="card" style="
+                        margin-top:25px;
+                        text-align:left;
+                    ">
+
+                        <p>
+                            <strong>Student:</strong>
+                            Student
+                        </p>
+
+                        <p style="margin-top:10px;">
+                            <strong>Subject:</strong>
+                            Web Programming
+                        </p>
+
+                        <p style="margin-top:10px;">
+                            <strong>Time:</strong>
+                            10:04 AM
+                        </p>
+
+                        <p style="margin-top:10px;">
+                            <strong>Method:</strong>
+                            Dynamic QR
+                        </p>
+
+                        <p style="margin-top:10px;">
+                            <strong>Location:</strong>
+                            NDC Attendance Zone
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="primary-btn"
+                        style="
+                            margin-top:20px;
+                        "
+                        onclick="renderStudent()">
+
+                        Back to Dashboard
+
+                    </button>
+
+                </div>
+
+            </main>
+
+        </div>
+
+        `;
+
+    }, 1000);
+
 }
 
-function manualAttendance(){
 
-  const studentName=document.getElementById("overrideStudent").value;
-  const reason=document.getElementById("overrideReason").value;
-  const remarks=document.getElementById("overrideRemarks").value.trim();
+/* =========================================================
+   TEACHER DASHBOARD
+   ========================================================= */
 
-  if(!remarks){
-    alert("Please enter admin remarks/reason details.");
-    return;
-  }
+function renderTeacher() {
 
-  toast(`${studentName.split(" — ")[0]} marked Present.`);
+    app.innerHTML = `
 
-  document.getElementById("overrideRemarks").value="";
+    <div class="app-layout">
 
-  setTimeout(()=>{
-    showPage("adminAttendance");
-  },700);
+        ${topbar("Teacher", "Teacher")}
+
+        <main class="main">
+
+            <div class="page-heading">
+
+                <h1>Teacher Dashboard</h1>
+
+                <p>
+                    Manage live classroom attendance.
+                </p>
+
+            </div>
+
+
+            <div class="content-grid">
+
+                <div class="card">
+
+                    <h2>
+                        Start Attendance
+                    </h2>
+
+                    <p style="
+                        color:#718096;
+                        margin-top:6px;
+                        font-size:13px;
+                    ">
+                        Create a live QR attendance session.
+                    </p>
+
+
+                    <div class="form-group"
+                        style="margin-top:22px;">
+
+                        <label>
+                            Select Class
+                        </label>
+
+                        <select class="form-input">
+
+                            <option>
+                                BCA 5th Semester
+                            </option>
+
+                            <option>
+                                BCA 3rd Semester
+                            </option>
+
+                            <option>
+                                B.Com 5th Semester
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Select Subject
+                        </label>
+
+                        <select class="form-input">
+
+                            <option>
+                                Web Programming
+                            </option>
+
+                            <option>
+                                DBMS
+                            </option>
+
+                            <option>
+                                Computer Networks
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        class="primary-btn"
+                        onclick="startAttendance()">
+
+                        Start Live Attendance
+
+                    </button>
+
+                </div>
+
+
+                <div class="card">
+
+                    <h2>
+                        Today's Summary
+                    </h2>
+
+                    <div style="
+                        margin-top:20px;
+                        padding:20px;
+                        border-radius:16px;
+                        background:#f5f8fd;
+                    ">
+
+                        <div style="
+                            font-size:32px;
+                            font-weight:900;
+                            color:#0b3d91;
+                        ">
+                            42
+                        </div>
+
+                        <p style="
+                            color:#718096;
+                            font-size:13px;
+                        ">
+                            Students Present
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="card" style="
+                margin-top:20px;
+            ">
+
+                <h2>
+                    Recent Sessions
+                </h2>
+
+                <div class="table-wrap"
+                    style="margin-top:18px;">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Class</th>
+                                <th>Time</th>
+                                <th>Present</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>DBMS</td>
+                                <td>BCA 5th</td>
+                                <td>12:00 PM</td>
+                                <td>43 / 50</td>
+                                <td>
+                                    <span class="status present">
+                                        Completed
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Networks</td>
+                                <td>BCA 5th</td>
+                                <td>2:00 PM</td>
+                                <td>40 / 50</td>
+                                <td>
+                                    <span class="status present">
+                                        Completed
+                                    </span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    `;
+
 }
 
-function showPage(id){
 
-  document.querySelectorAll(".page")
-    .forEach(page=>page.classList.remove("active"));
+/* =========================================================
+   TEACHER START ATTENDANCE
+   ========================================================= */
 
-  const page=document.getElementById(id);
+function startAttendance() {
 
-  if(page){
-    page.classList.add("active");
-    currentPage=id;
-  }
+    attendanceStarted = true;
+
+    attendanceSeconds = 300;
+
+    renderQRSession();
+
+    startCountdown();
+
 }
 
-function goHome(){
 
-  if(currentRole==="student") showPage("studentHome");
-  if(currentRole==="teacher") showPage("teacherHome");
-  if(currentRole==="admin") showPage("adminHome");
+/* =========================================================
+   QR SESSION
+   ========================================================= */
+
+function renderQRSession() {
+
+    app.innerHTML = `
+
+    <div class="app-layout">
+
+        ${topbar("Teacher", "Teacher")}
+
+        <main class="main">
+
+            <div style="
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                gap:15px;
+                flex-wrap:wrap;
+            ">
+
+                <div>
+
+                    <h1>
+                        Live Attendance
+                    </h1>
+
+                    <p style="
+                        color:#718096;
+                        margin-top:6px;
+                    ">
+                        BCA 5th Semester • Web Programming
+                    </p>
+
+                </div>
+
+                <span class="live-badge">
+                    <span class="live-dot"></span>
+                    LIVE
+                </span>
+
+            </div>
+
+
+            <div class="qr-card card"
+                style="margin-top:25px;">
+
+                <h2>
+                    Scan to Mark Attendance
+                </h2>
+
+                <p style="
+                    color:#718096;
+                    margin-top:7px;
+                ">
+                    Students must be inside the
+                    NDC attendance zone.
+                </p>
+
+
+                <div class="fake-qr"
+                    id="fakeQR">
+                </div>
+
+
+                <h2 id="timer">
+                    05:00
+                </h2>
+
+                <p style="
+                    color:#718096;
+                    font-size:12px;
+                    margin-top:5px;
+                ">
+                    Attendance session remaining
+                </p>
+
+
+                <div style="
+                    display:grid;
+                    grid-template-columns:
+                        repeat(3,1fr);
+                    gap:10px;
+                    margin-top:25px;
+                ">
+
+                    <div style="
+                        padding:15px;
+                        border-radius:14px;
+                        background:#f5f8fd;
+                    ">
+
+                        <strong style="
+                            font-size:22px;
+                            color:#0b3d91;
+                        ">
+                            42
+                        </strong>
+
+                        <p style="
+                            color:#718096;
+                            font-size:11px;
+                        ">
+                            Present
+                        </p>
+
+                    </div>
+
+
+                    <div style="
+                        padding:15px;
+                        border-radius:14px;
+                        background:#f5f8fd;
+                    ">
+
+                        <strong style="
+                            font-size:22px;
+                            color:#d28b18;
+                        ">
+                            5
+                        </strong>
+
+                        <p style="
+                            color:#718096;
+                            font-size:11px;
+                        ">
+                            Pending
+                        </p>
+
+                    </div>
+
+
+                    <div style="
+                        padding:15px;
+                        border-radius:14px;
+                        background:#f5f8fd;
+                    ">
+
+                        <strong style="
+                            font-size:22px;
+                            color:#0b3d91;
+                        ">
+                            50
+                        </strong>
+
+                        <p style="
+                            color:#718096;
+                            font-size:11px;
+                        ">
+                            Total
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="danger-btn"
+                    style="
+                        width:100%;
+                        margin-top:20px;
+                    "
+                    onclick="endAttendance()">
+
+                    End Attendance
+
+                </button>
+
+            </div>
+
+
+            <div class="card"
+                style="margin-top:20px;">
+
+                <h2>
+                    Live Student List
+                </h2>
+
+                <div class="table-wrap"
+                    style="margin-top:18px;">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Student</th>
+                                <th>Roll No.</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>Rahul Kumar</td>
+                                <td>BCA501</td>
+                                <td>10:01 AM</td>
+                                <td>
+                                    <span class="status present">
+                                        Present
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Anjali</td>
+                                <td>BCA502</td>
+                                <td>10:02 AM</td>
+                                <td>
+                                    <span class="status present">
+                                        Present
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Vikram</td>
+                                <td>BCA503</td>
+                                <td>Waiting</td>
+                                <td>
+                                    <span class="status manual">
+                                        Pending
+                                    </span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    `;
+
+    generateQR();
+
 }
 
-function logout(){
 
-  clearInterval(attendanceTimer);
+/* =========================================================
+   FAKE QR
+   ========================================================= */
 
-  document.getElementById("app").style.display="none";
-  document.getElementById("loginPage").style.display="grid";
+function generateQR() {
 
-  document.getElementById("loginPassword").value="";
+    const qr =
+        document.getElementById("fakeQR");
 
-  toast("Logged out.");
+    if(!qr) return;
+
+    qr.innerHTML = "";
+
+    for(let i = 0; i < 225; i++) {
+
+        const cell =
+            document.createElement("div");
+
+        cell.className =
+            Math.random() > .52
+            ? "qr-cell"
+            : "qr-cell white";
+
+        qr.appendChild(cell);
+
+    }
+
 }
 
-function toast(message){
 
-  const el=document.getElementById("toast");
+/* =========================================================
+   COUNTDOWN
+   ========================================================= */
 
-  el.textContent=message;
-  el.classList.add("show");
+function startCountdown() {
 
-  setTimeout(()=>{
-    el.classList.remove("show");
-  },2500);
+    clearInterval(countdownInterval);
+
+    countdownInterval =
+        setInterval(() => {
+
+            attendanceSeconds--;
+
+            if(attendanceSeconds <= 0) {
+
+                clearInterval(countdownInterval);
+
+                showToast(
+                    "Attendance session expired."
+                );
+
+                renderTeacher();
+
+                return;
+            }
+
+            const minutes =
+                Math.floor(
+                    attendanceSeconds / 60
+                );
+
+            const seconds =
+                attendanceSeconds % 60;
+
+            const timer =
+                document.getElementById("timer");
+
+            if(timer) {
+
+                timer.textContent =
+                    `${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+
+            }
+
+        }, 1000);
+
 }
+
+
+/* =========================================================
+   END ATTENDANCE
+   ========================================================= */
+
+function endAttendance() {
+
+    clearInterval(countdownInterval);
+
+    attendanceStarted = false;
+
+    showToast(
+        "Attendance session ended."
+    );
+
+    setTimeout(
+        renderTeacher,
+        600
+    );
+
+}
+
+
+/* =========================================================
+   ADMIN
+   ========================================================= */
+
+function renderAdmin() {
+
+    app.innerHTML = `
+
+    <div class="app-layout">
+
+        ${topbar("Admin", "Administrator")}
+
+        <main class="main">
+
+            <div class="page-heading">
+
+                <h1>
+                    Admin Dashboard
+                </h1>
+
+                <p>
+                    Manage NDC attendance operations.
+                </p>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+                <div class="card stat-card">
+
+                    <div class="stat-icon">
+                        👥
+                    </div>
+
+                    <div class="stat-value">
+                        1,240
+                    </div>
+
+                    <div class="stat-label">
+                        Students
+                    </div>
+
+                </div>
+
+
+                <div class="card stat-card">
+
+                    <div class="stat-icon">
+                        👨‍🏫
+                    </div>
+
+                    <div class="stat-value">
+                        64
+                    </div>
+
+                    <div class="stat-label">
+                        Teachers
+                    </div>
+
+                </div>
+
+
+                <div class="card stat-card">
+
+                    <div class="stat-icon">
+                        ✓
+                    </div>
+
+                    <div class="stat-value">
+                        89%
+                    </div>
+
+                    <div class="stat-label">
+                        Today's Attendance
+                    </div>
+
+                </div>
+
+
+                <div class="card stat-card">
+
+                    <div class="stat-icon">
+                        !
+                    </div>
+
+                    <div class="stat-value">
+                        27
+                    </div>
+
+                    <div class="stat-label">
+                        Manual Overrides
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-grid">
+
+                <div
+                    class="admin-action"
+                    onclick="showToast('Student management opened')">
+
+                    <div class="admin-icon">
+                        👥
+                    </div>
+
+                    <h3>
+                        Students
+                    </h3>
+
+                    <p>
+                        Manage student accounts and classes.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="admin-action"
+                    onclick="showToast('Teacher management opened')">
+
+                    <div class="admin-icon">
+                        👨‍🏫
+                    </div>
+
+                    <h3>
+                        Teachers
+                    </h3>
+
+                    <p>
+                        Manage teacher accounts.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="admin-action"
+                    onclick="showToast('Attendance records opened')">
+
+                    <div class="admin-icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        Attendance
+                    </h3>
+
+                    <p>
+                        View attendance records and reports.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="admin-action"
+                    onclick="openOverride()">
+
+                    <div class="admin-icon">
+                        ✎
+                    </div>
+
+                    <h3>
+                        Manual Override
+                    </h3>
+
+                    <p>
+                        Add attendance for approved reasons.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="admin-action"
+                    onclick="showToast('Class management opened')">
+
+                    <div class="admin-icon">
+                        🏫
+                    </div>
+
+                    <h3>
+                        Classes
+                    </h3>
+
+                    <p>
+                        Manage courses and sections.
+                    </p>
+
+                </div>
+
+
+                <div
+                    class="admin-action"
+                    onclick="showToast('Audit logs opened')">
+
+                    <div class="admin-icon">
+                        🔐
+                    </div>
+
+                    <h3>
+                        Audit Logs
+                    </h3>
+
+                    <p>
+                        Track attendance changes.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="card"
+                style="margin-top:20px;">
+
+                <h2>
+                    Recent Attendance Activity
+                </h2>
+
+                <div class="table-wrap"
+                    style="margin-top:18px;">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Student</th>
+                                <th>Subject</th>
+                                <th>Method</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    Rahul Kumar
+                                </td>
+
+                                <td>
+                                    Web Programming
+                                </td>
+
+                                <td>
+                                    QR
+                                </td>
+
+                                <td>
+                                    10:02 AM
+                                </td>
+
+                                <td>
+                                    <span class="status present">
+                                        Present
+                                    </span>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Anjali
+                                </td>
+
+                                <td>
+                                    DBMS
+                                </td>
+
+                                <td>
+                                    Admin Override
+                                </td>
+
+                                <td>
+                                    09:45 AM
+                                </td>
+
+                                <td>
+                                    <span class="status manual">
+                                        Manual
+                                    </span>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   ADMIN OVERRIDE
+   ========================================================= */
+
+function openOverride() {
+
+    const modal =
+        document.createElement("div");
+
+    modal.className = "modal active";
+
+    modal.id = "overrideModal";
+
+    modal.innerHTML = `
+
+    <div class="modal-card">
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        ">
+
+            <div>
+
+                <h2>
+                    Manual Attendance
+                </h2>
+
+                <p style="
+                    color:#718096;
+                    margin-top:5px;
+                    font-size:12px;
+                ">
+                    Admin override requires a reason.
+                </p>
+
+            </div>
+
+            <button
+                class="secondary-btn"
+                onclick="closeOverride()">
+
+                ✕
+
+            </button>
+
+        </div>
+
+
+        <div class="form-group"
+            style="margin-top:22px;">
+
+            <label>
+                Student
+            </label>
+
+            <select class="form-input">
+
+                <option>
+                    Rahul Kumar — BCA501
+                </option>
+
+                <option>
+                    Anjali — BCA502
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Subject
+            </label>
+
+            <select class="form-input">
+
+                <option>
+                    Web Programming
+                </option>
+
+                <option>
+                    DBMS
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Reason
+            </label>
+
+            <select class="form-input">
+
+                <option>
+                    Medical Reason
+                </option>
+
+                <option>
+                    Official College Work
+                </option>
+
+                <option>
+                    Technical Issue
+                </option>
+
+                <option>
+                    Other
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Remarks
+            </label>
+
+            <textarea
+                class="form-input"
+                placeholder="Enter details...">
+            </textarea>
+
+        </div>
+
+
+        <button
+            class="primary-btn"
+            onclick="submitOverride()">
+
+            Mark Attendance
+
+        </button>
+
+    </div>
+
+    `;
+
+    document.body.appendChild(modal);
+
+}
+
+
+function closeOverride() {
+
+    const modal =
+        document.getElementById("overrideModal");
+
+    if(modal) modal.remove();
+
+}
+
+
+function submitOverride() {
+
+    closeOverride();
+
+    showToast(
+        "Manual attendance recorded with audit log."
+    );
+
+}
+
+
+/* =========================================================
+   HISTORY
+   ========================================================= */
+
+function showHistory() {
+
+    showToast(
+        "Full attendance history opened."
+    );
+
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent = message;
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    }, 2600);
+
+}
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+renderLogin();
+
 </script>
 
 </body>
